@@ -24,7 +24,7 @@ export async function getStandings() {
       fetchGoogleSheet<Prediction>(
         SHEETS.PREDICTIONS
       ),
-    ]);
+    ]); 
 
   return calculateStandings({
     participants,
