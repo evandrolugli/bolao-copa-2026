@@ -1,7 +1,7 @@
-import { fetchGoogleSheet } from "../../lib/googleSheets";
-import { calculateStandings } from "../../lib/calculateStandings";
+import { fetchGoogleSheet } from "../../lib/googleSheets/sheetsConfig";
+import { calculateStandings } from "../../lib/services/standingsService";
 
-export async function GET() {
+export async function getStandings() {
   const [participants, matches, predictions] = await Promise.all([
     fetchGoogleSheet("Participants"),
     fetchGoogleSheet("Matches"),
@@ -9,6 +9,8 @@ export async function GET() {
   ]);
 
   const bets = calculateStandings({ participants, matches, predictions });
-
   return Response.json({ bets });
+  // return calculateStandings({ participants, matches, predictions, });
 }
+
+  

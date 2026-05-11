@@ -2,7 +2,7 @@ import type {
   Participant,
   Match,
   Prediction,
-} from "@/lib/types";
+} from "../utils/types";
 
 type Standing = Participant & {
   position: number | null;
@@ -29,11 +29,10 @@ export function calculateStandings({
 }: Props): Standing[] {
   const standingsMap = new Map<number, Standing>();
 
-  // Create participants
-  participants.forEach((participant) => {
+  // 1. INIT PARTICIPANTS
+  for (const participant of participants) {
     standingsMap.set(participant.id, {
       ...participant,
-
       position: null,
       points: 0,
       exactHits: 0,
@@ -44,43 +43,44 @@ export function calculateStandings({
       positionChange: 0,
       totalPredictions: 0,
     });
-  });
+  }
 
-  // Match lookup
-  const matchesMap = new Map<number, Match>();
+  // 2. MATCH LOOKUP MAP
+  const matchMap = new Map<number, Match>();
 
-  matches.forEach((match) => {
-    matchesMap.set(match.id, match);
-  });
+  for (const match of matches) {
+    matchMap.set(match.id, match);
+  }
 
-  // Latest published day
+  // 3. FIND LATEST DAY (ONLY PUBLISHED MATCHES)
   const publishedMatches = matches.filter(
-    (match) => match.status === "publicar"
+    (m) => m.status === "publicar"
   );
 
-  const latestDay = Math.max(
-    ...publishedMatches.map((match) => match.day)
-  );
+  const latestDay =
+    publishedMatches.length > 0
+      ? Math.max(...publishedMatches.map((m) => m.day))
+      : 0;
 
-  // Process predictions
-  predictions.forEach((prediction) => {
+  // 4. PROCESS PREDICTIONS
+  for (const prediction of predictions) {
     const participant = standingsMap.get(
       prediction.participant_id
     );
 
-    const match = matchesMap.get(prediction.match_id);
+    const match = matchMap.get(prediction.match_id);
 
-    if (!participant || !match) return;
+    if (!participant || !match) continue;
 
-    // ONLY published matches
-    if (match.status !== "publicar") return;
+    // only published matches
+    if (match.status !== "publicar") continue;
 
-    // Ignore unfinished matches
+    // ignore unfinished matches
     if (
-      match.home_score === null ||
-      match.away_score === null
+      match.home_score == null ||
+      match.away_score == null
     ) {
-      return;
+      continue;
     }
 
     participant.totalPredictions++;
@@ -91,7 +91,7 @@ export function calculateStandings({
     const predictedHome = prediction.pred_home;
     const predictedAway = prediction.pred_away;
 
-    const exact =
+    const isExact =
       actualHome === predictedHome &&
       actualAway === predictedAway;
 
@@ -103,71 +103,65 @@ export function calculateStandings({
       predictedHome - predictedAway
     );
 
-    const correctWinner =
+    const isCorrectWinner =
       actualResult === predictedResult;
 
-    let earnedPoints = 0;
+    let points = 0;
 
-    if (exact) {
-      earnedPoints = 3;
-
+    if (isExact) {
+      points = 3;
       participant.exactHits++;
-    } else if (correctWinner) {
-      earnedPoints = 1;
-
+    } else if (isCorrectWinner) {
+      points = 1;
       participant.correctWinner++;
     } else {
       participant.wrong++;
     }
 
-    participant.points += earnedPoints;
+    participant.points += points;
 
     // Brazil matches
     if (match.is_brazil) {
-      participant.brazilPoints += earnedPoints;
+      participant.brazilPoints += points;
     }
 
     // Latest day points
     if (match.day === latestDay) {
-      participant.todayPoints += earnedPoints;
+      participant.todayPoints += points;
     }
-  });
+  }
 
-  // Convert to array
-  const standings = Array.from(
-    standingsMap.values()
-  );
+  // 5. CONVERT TO ARRAY
+  const standings = Array.from(standingsMap.values());
 
-  // Sort
+  // 6. SORT
   standings.sort((a, b) => {
-    if (b.points !== a.points) {
-      return b.points - a.points;
-    }
+    if (b.points !== a.points) return b.points - a.points;
 
-    if (b.exactHits !== a.exactHits) {
+    if (b.exactHits !== a.exactHits)
       return b.exactHits - a.exactHits;
-    }
 
     return a.nome.localeCompare(b.nome);
   });
 
-  // Position with ties
-  let currentPosition = 1;
+  // 7. POSITIONING (WITH TIES)
+  let position = 1;
 
-  standings.forEach((participant, index) => {
-    const previous = standings[index - 1];
+  for (let i = 0; i < standings.length; i++) {
+    const current = standings[i];
+    const previous = standings[i - 1];
 
     if (
       previous &&
-      previous.points === participant.points
+      previous.points === current.points
     ) {
-      participant.position = null;
+      current.position = null;
     } else {
-      participant.position = currentPosition;
+      current.position = position;
     }
 
-    currentPosition++;
-  });
+    position++;
+  }
 
   return standings;
 }

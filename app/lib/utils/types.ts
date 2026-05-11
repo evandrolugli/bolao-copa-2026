@@ -3,7 +3,7 @@ export type Participant = {
     nome: string;
   };
   
-  export type Match = {
+export type Match = {
     id: number;
     fase: string;
     rodada: string;
@@ -14,11 +14,11 @@ export type Participant = {
     is_brazil: boolean;
     day: number;
     status: string;
-  };
+};
   
-  export type Prediction = {
+export type Prediction = {
     participant_id: number;
     match_id: number;
     pred_home: number;
     pred_away: number;
-  };
+};
