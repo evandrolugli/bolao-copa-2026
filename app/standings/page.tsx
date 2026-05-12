@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getStandings as fetchStandings } from "../lib/services/standingsService";
 
 type Standing = {
