@@ -23,11 +23,6 @@ type Standing = {
   phase2: number;
 };
 
-
-// async function getStandings(): Promise<Standing[]> {
-//   return fetchStandings();
-// }
-
 export default async function StandingsPage() {
   const day = 1; // from query param or UI
   const standings = await getStandings(day);

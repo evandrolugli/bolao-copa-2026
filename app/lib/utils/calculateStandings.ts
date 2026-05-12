@@ -91,6 +91,7 @@ export function calculateStandings({
   for (const prediction of predictions) {
     const participant = standingsMap.get(prediction.participant_id);
     const match = matchMap.get(prediction.match_id);
+    if (!participant) continue;
     if (!match) continue;
 
     if (match.home_score == null || match.away_score == null) continue;
