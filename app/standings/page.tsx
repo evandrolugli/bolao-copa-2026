@@ -1,3 +1,5 @@
+import { getStandings as fetchStandings } from "../lib/services/standingsService";
+
 type Standing = {
   id: number;
   nome: string;
@@ -12,21 +14,25 @@ type Standing = {
   totalPredictions: number;
 };
 
+// async function getStandings(): Promise<Standing[]> {
+//   const response = await fetch(
+//     "http://localhost:3000/api/standings",
+//     {
+//       cache: "no-store",
+//     }
+//   );
+
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch standings");
+//   }
+
+//   const data = await response.json();
+
+//   return data.standings;
+// }
+
 async function getStandings(): Promise<Standing[]> {
-  const response = await fetch(
-    "http://localhost:3000/api/standings",
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch standings");
-  }
-
-  const data = await response.json();
-
-  return data.standings;
+  return fetchStandings();
 }
 
 export default async function StandingsPage() {
