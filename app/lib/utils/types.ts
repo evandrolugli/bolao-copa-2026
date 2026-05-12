@@ -1,12 +1,12 @@
 export type Participant = {
     id: number;
-    nome: string;
+    name: string;
   };
   
 export type Match = {
     id: number;
-    fase: string;
-    rodada: string;
+    phase: string;
+    round: string;
     home: string;
     away: string;
     home_score: number | null;

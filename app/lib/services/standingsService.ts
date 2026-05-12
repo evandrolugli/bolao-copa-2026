@@ -8,28 +8,39 @@ import type {
   Prediction,
 } from "../utils/types";
 
-
-export async function getStandings(day?: number) {
-  console.log("SERVICE RECEIVED DAY:", day);
+export async function getStandings() {
+  // Fetch data
   const [participants, matches, predictions] =
     await Promise.all([
-      fetchGoogleSheet<Participant>(
-        SHEETS.PARTICIPANTS
-      ),
+      fetchGoogleSheet<Participant>(SHEETS.PARTICIPANTS),
+      fetchGoogleSheet<Match>(SHEETS.MATCHES),
+      fetchGoogleSheet<Prediction>(SHEETS.PREDICTIONS),
+    ]);
 
-      fetchGoogleSheet<Match>(
-        SHEETS.MATCHES
-      ),
+  // Only published matches
+  const publishedMatches = matches.filter(
+    (m) => m.status === "publicar"
+  );
 
-      fetchGoogleSheet<Prediction>(
-        SHEETS.PREDICTIONS
-      ),
-    ]); 
+  // Latest day from published matches
+  const latestDay = publishedMatches.length
+    ? Math.max(...publishedMatches.map((m) => m.day))
+    : 0;
 
-  return calculateStandings({
+  // Matches used for scoring
+  const scoringMatches = publishedMatches;
+
+  // Calculate standings
+  const standings = calculateStandings({
     participants,
-    matches,
+    matches: scoringMatches,
     predictions,
-    day,
   });
+
+  // Return result
+  return {
+    standings,
+    day: latestDay,
+    matchesCount: scoringMatches.length,
+  };
 }

@@ -1,10 +1,9 @@
 export const dynamic = "force-dynamic";
-//import { getStandings as fetchStandings } from "../lib/services/standingsService";
 import { getStandings } from "../lib/services/standingsService";
 
 type Standing = {
   id: number;
-  nome: string;
+  name: string;
   position: number | null;
   points: number;
   exactHits: number;
@@ -13,7 +12,6 @@ type Standing = {
   brazilPoints: number;
   todayPoints: number;
   positionChange: number;
-  totalPredictions: number;
 
   // Secondary columns
   round1: number;
@@ -24,18 +22,16 @@ type Standing = {
 };
 
 export default async function StandingsPage() {
-  const day = 1; // from query param or UI
-  const standings = await getStandings(day);
+
+  const { standings, day, matchesCount } = await getStandings();
 
   const maxValues = {
     brazilPoints: 0,
     todayPoints: 0,
     positionChange: 0,
-
     round1: 0,
     round2: 0,
     round3: 0,
-
     phase1: 0,
     phase2: 0,
   };
@@ -51,7 +47,6 @@ export default async function StandingsPage() {
     maxValues.round1 = Math.max(maxValues.round1, p.round1);
     maxValues.round2 = Math.max(maxValues.round2, p.round2);
     maxValues.round3 = Math.max(maxValues.round3, p.round3);
-
     maxValues.phase1 = Math.max(maxValues.phase1, p.phase1);
     maxValues.phase2 = Math.max(maxValues.phase2, p.phase2);
   }
@@ -60,117 +55,336 @@ export default async function StandingsPage() {
     return value === max && max !== 0;
   }
 
-  //console.log("MAX VALUES:", maxValues);
-  //console.log("STANDINGS SAMPLE:", standings[0]);
-
-  const highlightClass = "bg-yellow-400 text-black font-bold ring-2 ring-yellow-500";
-
   return (
-    <main className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-5xl mx-auto">
+
+    <main className="min-h-screen bg-zinc-100 text-zinc-900 p-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold">
-            Classificação
-          </h1>
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            {/* Left */}
+            <div>
+              <h1 className="text-4xl font-bold tracking-tight text-zinc-900">
+                Classificação
+              </h1>
+            </div>
 
-          <p className="text-zinc-400 mt-2">
-            Leaderboard based on match predictions
-          </p>
+            {/* Right Info */}
+            <div className="flex items-center gap-3">
+              {/* Matches */}
+              <div className="rounded-2xl border border-zinc-200 bg-white px-5 py-3 shadow-sm text-center min-w-[110px]">
+                <p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
+                  Jogos
+                </p>
+
+                <p className="text-2xl font-bold text-zinc-900">
+                  {matchesCount}
+                </p>
+              </div>
+
+              {/* Day */}
+              <div className="rounded-2xl border border-zinc-200 bg-white px-5 py-3 shadow-sm text-center min-w-[110px]">
+                <p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
+                  Dia
+                </p>
+
+                <p className="text-2xl font-bold text-zinc-900">
+                  {day}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
-          <table className="w-full text-sm">
-            <thead className="bg-zinc-900">
-              <tr className="text-center">
-                <th className="p-4">#</th>
-                <th className="p-4">Participantes</th>
-                <th className="p-4">PTS</th>
-                <th className="p-4">Em cheio</th>
-                <th className="p-4">Desfechos</th>
-                <th className="p-4">Erros</th>
-                <th className="p-4">Brasil</th>
-                <th className="p-4">Δ Pts</th>
-                <th className="p-4">Δ Pos</th>
+        <div className="overflow-x-auto rounded-3xl border border-zinc-200 bg-white shadow-lg">
+          <table className="w-full text-sm border-collapse">
+            {/* Header */}
+            <thead>
+              <tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-center">
+                <th className="w-14 p-3 font-semibold">#</th>
 
-                <th className="p-4 bg-zinc-800 text-zinc-300">R1</th>
-                <th className="p-4 bg-zinc-800 text-zinc-300">R2</th>
-                <th className="p-4 bg-zinc-800 text-zinc-300">R3</th>
-                <th className="p-4 bg-zinc-800 text-zinc-300">F1</th>
-                <th className="p-4 bg-zinc-800 text-zinc-300">F2</th>
+                <th className="w-[240px] p-3 text-left font-semibold">
+                  Participantes
+                </th>
 
+                {/* PTS */}
+                <th className="w-16 p-3 bg-emerald-700 text-emerald-100 font-semibold">
+                  PTS
+                </th>
+
+                <th className="w-16 p-3 font-semibold">
+                  Em cheio
+                </th>
+
+                <th className="w-16 p-3 font-semibold">
+                  Desfechos
+                </th>
+
+                <th className="w-16 p-3 font-semibold">
+                  Erros
+                </th>
+
+                {/* Brasil */}
+                <th className="w-16 p-3 bg-amber-200/20 text-amber-200 font-semibold">
+                  Brasil
+                </th>
+
+                {/* Diff */}
+                <th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-500">
+                  Δ Pts
+                </th>
+
+                <th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold">
+                  Δ Pos
+                </th>
+
+                {/* Secondary */}
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold border-l border-zinc-700">
+                  R1
+                </th>
+
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
+                  R2
+                </th>
+
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
+                  R3
+                </th>
+
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
+                  F1
+                </th>
+
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
+                  F2
+                </th>
               </tr>
             </thead>
 
             <tbody>
-              {standings.map((participant) => (
-                <tr
-                  key={participant.id}
-                  className="border-t border-zinc-800 hover:bg-zinc-900 transition"
-                >
-                  <td className="p-4 font-bold">
-                    {participant.position ?? ""}
-                  </td>
-                  <td className="p-4">
-                    {participant.nome}
-                  </td>
+              {standings.map((participant, index) => {
+                const topThree =
+                  index <= 2
+                    ? "bg-amber-50 hover:bg-amber-100"
+                    : "bg-white hover:bg-zinc-50";
 
-                  <td className="p-4 font-bold text-green-400">
-                    {participant.points}
-                  </td>
+                return (
+                  <tr
+                    key={participant.id}
+                    className={`
+                    border-t border-zinc-200
+                    transition-colors duration-200
+                    text-center
+                    ${topThree}
+                  `}
+                  >
+                    {/* Position */}
+                    <td className="p-3 font-bold text-base text-amber-700">
+                      {participant.position ?? ""}
+                    </td>
 
-                  <td className="p-4">
-                    {participant.exactHits}
-                  </td>
+                    {/* Name */}
+                    <td className="p-3 text-left font-semibold whitespace-nowrap">
+                      {participant.name}
+                    </td>
 
-                  <td className="p-4">
-                    {participant.correctWinner}
-                  </td>
+                    {/* Points */}
+                    <td className="p-3 bg-emerald-50">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[52px] h-8 px-3 rounded-lg
+                        font-bold text-base
 
-                  <td className="p-4">
-                    {participant.wrong}
-                  </td>
-                  <td className={`p-4 ${isMax(participant.brazilPoints, maxValues.brazilPoints)
-                    ? highlightClass
-                    : ""
-                    }`}>
-                    {participant.brazilPoints}
-                  </td>
-                  <td className={`p-4 ${isMax(participant.todayPoints, maxValues.todayPoints) ? highlightClass : ""}`}>
-                    {participant.todayPoints > 0
-                      ? `+${participant.todayPoints}`
-                      : participant.todayPoints}
-                  </td>
+                        ${index <= 2
+                            ? "bg-emerald-200 text-emerald-900"
+                            : "text-emerald-700"
+                          }
+                      `}
+                      >
+                        {participant.points}
+                      </div>
+                    </td>
 
-                  <td className="p-4">
-                    {participant.positionChange > 0
-                      ? `+${participant.positionChange}`
-                      : participant.positionChange}
-                  </td>
+                    {/* Exact */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[40px] h-8 px-2 rounded-lg
 
-                  {/* Secondary Columns */}
-                  <td className={`p-4 ${isMax(participant.round1, maxValues.round1) ? highlightClass : ""}`}>
-                    {participant.round1}
-                  </td>
+                        ${isMax(participant.exactHits, maxValues.exactHits)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.exactHits}
+                      </div>
+                    </td>
 
-                  <td className={`p-4 ${isMax(participant.round2, maxValues.round2) ? highlightClass : ""}`}>
-                    {participant.round2}
-                  </td>
+                    {/* Winner */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[40px] h-8 px-2 rounded-lg
 
-                  <td className={`p-4 ${isMax(participant.round3, maxValues.round3) ? highlightClass : ""}`}>
-                    {participant.round3}
-                  </td>
+                        ${isMax(
+                          participant.correctWinner,
+                          maxValues.correctWinner
+                        )
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.correctWinner}
+                      </div>
+                    </td>
 
-                  <td className={`p-4 ${isMax(participant.phase1, maxValues.phase1) ? highlightClass : ""}`}>
-                    {participant.phase1}
-                  </td>
+                    {/* Wrong */}
+                    <td className="p-3 text-zinc-500">
+                      {participant.wrong}
+                    </td>
 
-                  <td className="p-4 bg-zinc-950 text-zinc-300">
-                    {participant.phase2}
-                  </td>
-                </tr>
-              ))}
+                    {/* Brasil */}
+                    <td className="p-3 bg-amber-50">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[40px] h-8 px-2 rounded-lg
+
+                        ${isMax(
+                          participant.brazilPoints,
+                          maxValues.brazilPoints
+                        )
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : "text-amber-700"
+                          }
+                      `}
+                      >
+                        {participant.brazilPoints}
+                      </div>
+                    </td>
+
+                    {/* Diff Points */}
+                    <td className="p-3 border-l border-zinc-200">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[48px] h-8 px-2 rounded-lg font-semibold
+
+                        ${isMax(
+                          participant.todayPoints,
+                          maxValues.todayPoints
+                        )
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : "text-sky-700"
+                          }
+                      `}
+                      >
+                        {participant.todayPoints > 0
+                          ? `+${participant.todayPoints}`
+                          : participant.todayPoints}
+                      </div>
+                    </td>
+
+                    {/* Diff Position */}
+                    <td className="p-3 text-sky-700 font-semibold">
+                      {participant.positionChange > 0
+                        ? `+${participant.positionChange}`
+                        : participant.positionChange}
+                    </td>
+
+                    {/* Round 1 */}
+                    <td className="p-3 border-l border-zinc-200">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[38px] h-8 px-2 rounded-lg
+
+                        ${isMax(participant.round1, maxValues.round1)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.round1}
+                      </div>
+                    </td>
+
+                    {/* Round 2 */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[38px] h-8 px-2 rounded-lg
+
+                        ${isMax(participant.round2, maxValues.round2)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.round2}
+                      </div>
+                    </td>
+
+                    {/* Round 3 */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[38px] h-8 px-2 rounded-lg
+
+                        ${isMax(participant.round3, maxValues.round3)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.round3}
+                      </div>
+                    </td>
+
+                    {/* Phase 1 */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[42px] h-8 px-2 rounded-lg
+
+                        ${isMax(participant.phase1, maxValues.phase1)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.phase1}
+                      </div>
+                    </td>
+
+                    {/* Phase 2 */}
+                    <td className="p-3">
+                      <div
+                        className={`
+                        inline-flex items-center justify-center
+                        min-w-[42px] h-8 px-2 rounded-lg
+
+                        ${isMax(participant.phase2, maxValues.phase2)
+                            ? "bg-violet-200 text-violet-900 font-bold"
+                            : ""
+                          }
+                      `}
+                      >
+                        {participant.phase2}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
