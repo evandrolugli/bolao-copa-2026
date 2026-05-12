@@ -2,11 +2,11 @@ export default function PredictionsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">
-        Predictions
+        Apostas
       </h1>
 
       <p className="text-zinc-400">
-        Matches and user predictions will appear here.
+        Apostas dos participantes
       </p>
 
       <div className="mt-6 space-y-3">
