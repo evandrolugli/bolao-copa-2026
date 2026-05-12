@@ -1,7 +1,5 @@
 import { fetchGoogleSheet } from "../googleSheets/fetchSheet";
-
 import { SHEETS } from "../googleSheets/sheetsConfig";
-
 import { calculateStandings } from "../utils/calculateStandings";
 
 import type {
@@ -10,7 +8,9 @@ import type {
   Prediction,
 } from "../utils/types";
 
-export async function getStandings() {
+
+export async function getStandings(day?: number) {
+  console.log("SERVICE RECEIVED DAY:", day);
   const [participants, matches, predictions] =
     await Promise.all([
       fetchGoogleSheet<Participant>(
@@ -30,5 +30,6 @@ export async function getStandings() {
     participants,
     matches,
     predictions,
+    day,
   });
 }

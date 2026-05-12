@@ -14,6 +14,12 @@ type Standing = Participant & {
   todayPoints: number;
   positionChange: number;
   totalPredictions: number;
+
+  round1: number;
+  round2: number;
+  round3: number;
+  phase1: number;
+  phase2: number;
 };
 
 type Props = {
@@ -26,7 +32,8 @@ export function calculateStandings({
   participants,
   matches,
   predictions,
-}: Props): Standing[] {
+  day,
+}: Props & { day?: number }): Standing[]{
   const standingsMap = new Map<number, Standing>();
 
   // 1. INIT PARTICIPANTS
@@ -42,48 +49,53 @@ export function calculateStandings({
       todayPoints: 0,
       positionChange: 0,
       totalPredictions: 0,
+      round1: 0,
+      round2: 0,
+      round3: 0,
+      phase1: 0,
+      phase2: 0,
     });
   }
 
-  // 2. MATCH LOOKUP MAP
-  const matchMap = new Map<number, Match>();
-
-  for (const match of matches) {
-    matchMap.set(match.id, match);
-  }
-
-  // 3. FIND LATEST DAY (ONLY PUBLISHED MATCHES)
   const publishedMatches = matches.filter(
     (m) => m.status === "publicar"
   );
 
-  const latestDay =
-    publishedMatches.length > 0
-      ? Math.max(...publishedMatches.map((m) => m.day))
-      : 0;
+  // get all available published days
+  const availableDays = [
+    ...new Set(publishedMatches.map((m) => m.day)),
+  ];
+
+  // latest published day
+  const latestPublishedDay = Math.max(...availableDays);
+
+  // decide effective day
+  const effectiveDay =
+    day !== undefined && availableDays.includes(day)
+      ? day
+      : latestPublishedDay;
+      
+  const filteredPublishedMatches = publishedMatches.filter(
+    (m) => m.day === effectiveDay
+  );
+
+  // 2. MATCH LOOKUP MAP
+  const matchMap = new Map<number, Match>();
+
+  for (const match of filteredPublishedMatches) {
+  matchMap.set(match.id, match);
+}
+
 
   // 4. PROCESS PREDICTIONS
   for (const prediction of predictions) {
-    const participant = standingsMap.get(
-      prediction.participant_id
-    );
-
+    const participant = standingsMap.get(prediction.participant_id);
     const match = matchMap.get(prediction.match_id);
+    if (!match) continue;
 
-    if (!participant || !match) continue;
+    if (match.home_score == null || match.away_score == null) continue;
 
-    // only published matches
-    if (match.status !== "publicar") continue;
-
-    // ignore unfinished matches
-    if (
-      match.home_score == null ||
-      match.away_score == null
-    ) {
-      continue;
-    }
-
-    participant.totalPredictions++;
+    //participant.totalPredictions++;
 
     const actualHome = match.home_score;
     const actualAway = match.away_score;
@@ -120,13 +132,35 @@ export function calculateStandings({
 
     participant.points += points;
 
+    // ROUND POINTS
+    if (match.rodada === "R1") {
+      participant.round1 += points;
+    }
+
+    if (match.rodada === "R2") {
+      participant.round2 += points;
+    }
+
+    if (match.rodada === "R3") {
+      participant.round3 += points;
+    }
+
+    // PHASE POINTS
+    if (match.fase === "grupo") {
+      participant.phase1 += points;
+    }
+
+    if (match.fase === "fase 2") {
+      participant.phase2 += points;
+    }
+
     // Brazil matches
     if (match.is_brazil) {
       participant.brazilPoints += points;
     }
 
-    // Latest day points
-    if (match.day === latestDay) {
+    // effective day points
+    if (match.day === effectiveDay) {
       participant.todayPoints += points;
     }
   }
@@ -162,6 +196,8 @@ export function calculateStandings({
 
     position++;
   }
+
+  console.log("FILTER DAY RECEIVED:", day);
 
   return standings;
 }
