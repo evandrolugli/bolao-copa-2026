@@ -126,12 +126,12 @@ export default async function StandingsPage() {
                 </th>
 
                 {/* Brasil */}
-                <th className="w-16 p-3 bg-amber-200/20 text-amber-200 font-semibold">
+                <th className="w-16 p-3 bg-amber-200/20 text-amber-200 font-semibold border-l border-amber-200/20">
                   Brasil
                 </th>
 
                 {/* Diff */}
-                <th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-500">
+                <th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-200/20">
                   Δ Pts
                 </th>
 
@@ -140,7 +140,7 @@ export default async function StandingsPage() {
                 </th>
 
                 {/* Secondary */}
-                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold border-l border-zinc-700">
+                <th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold border-l border-zinc-200/20">
                   R1
                 </th>
 
@@ -210,15 +210,9 @@ export default async function StandingsPage() {
                     {/* Exact */}
                     <td className="p-3">
                       <div
-                        className={`
+                        className="
                         inline-flex items-center justify-center
-                        min-w-[40px] h-8 px-2 rounded-lg
-
-                        ${isMax(participant.exactHits, maxValues.exactHits)
-                            ? "bg-violet-200 text-violet-900 font-bold"
-                            : ""
-                          }
-                      `}
+                        min-w-10 h-8 px-2 rounded-lg"
                       >
                         {participant.exactHits}
                       </div>
@@ -227,18 +221,9 @@ export default async function StandingsPage() {
                     {/* Winner */}
                     <td className="p-3">
                       <div
-                        className={`
+                        className="
                         inline-flex items-center justify-center
-                        min-w-[40px] h-8 px-2 rounded-lg
-
-                        ${isMax(
-                          participant.correctWinner,
-                          maxValues.correctWinner
-                        )
-                            ? "bg-violet-200 text-violet-900 font-bold"
-                            : ""
-                          }
-                      `}
+                        min-w-10 h-8 px-2 rounded-lg"
                       >
                         {participant.correctWinner}
                       </div>
@@ -250,11 +235,11 @@ export default async function StandingsPage() {
                     </td>
 
                     {/* Brasil */}
-                    <td className="p-3 bg-amber-50">
+                    <td className="p-3 border-l border-zinc-200">
                       <div
                         className={`
                         inline-flex items-center justify-center
-                        min-w-[40px] h-8 px-2 rounded-lg
+                        min-w-10 h-8 px-2 rounded-lg
 
                         ${isMax(
                           participant.brazilPoints,
