@@ -1,41 +1,35 @@
-import { fetchGoogleSheet } from "../googleSheets/fetchSheet";
+import { fetchSheet } from "../googleSheets/fetchSheet";
 import { SHEETS } from "../googleSheets/sheetsConfig";
 import { calculateLeaderboard } from "../utils/calculateLeaderboard";
 import { MATCH_STATUS } from "../utils/constants";
 import type { Match, Participant, Prediction } from "../utils/types";
 
 export async function getLeaderboard() {
-	// Fetch data
+	// fetch all required data in parallel
 	const [participants, matches, predictions] = await Promise.all([
-		fetchGoogleSheet<Participant>(SHEETS.PARTICIPANTS),
-		fetchGoogleSheet<Match>(SHEETS.MATCHES),
-		fetchGoogleSheet<Prediction>(SHEETS.PREDICTIONS),
+		fetchSheet<Participant>(SHEETS.PARTICIPANTS),
+		fetchSheet<Match>(SHEETS.MATCHES),
+		fetchSheet<Prediction>(SHEETS.PREDICTIONS),
 	]);
 
-	// Only published matches
-	const publishedMatches = matches.filter(
-		(m) => m.status === MATCH_STATUS.PUBLISHED,
-	);
-
-	// Latest day from published matches
-	const latestDay = publishedMatches.length
-		? Math.max(...publishedMatches.map((m) => m.day))
-		: 0;
-
-	// Matches used for scoring
-	const scoringMatches = publishedMatches;
-
-	// Calculate standings
-	const leaderboard = calculateLeaderboard({
+	// build leaderboard from raw data
+	const { leaderboard, effectiveDay } = calculateLeaderboard({
 		participants,
-		matches: scoringMatches,
+		matches,
 		predictions,
 	});
 
-	// Return result
+	// count only published matches && score != null
+	const matchesCount = matches.filter(
+		(m) =>
+			m.status === MATCH_STATUS.PUBLISHED &&
+			m.home_score != null &&
+			m.away_score != null,
+	).length;
+
 	return {
 		leaderboard,
-		day: latestDay,
-		matchesCount: scoringMatches.length,
+		day: effectiveDay,
+		matchesCount,
 	};
 }

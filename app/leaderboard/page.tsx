@@ -8,7 +8,7 @@ type LeaderboardEntry = {
 	position: number | null;
 	points: number;
 	exactHits: number;
-	correctWinner: number;
+	correctHits: number;
 	wrong: number;
 	brazilPoints: number;
 	todayPoints: number;
@@ -224,7 +224,7 @@ export default async function LeaderboardPage() {
 										{/* Winner */}
 										<td className="p-3">
 											<div className="inline-flex items-center justify-center min-w-10 h-8 px-2 rounded-lg">
-												{participant.correctWinner}
+												{participant.correctHits}
 											</div>
 										</td>
 

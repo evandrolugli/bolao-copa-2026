@@ -8,13 +8,13 @@ export function calculateLeaderboard({
 	matches,
 	predictions,
 }: any) {
-	// 1. base leaderboard
+	// build base leaderboard + match lookup + current valid day
 	const { leaderboard, matchMap, effectiveDay } = buildLeaderboard({
 		participants,
 		matches,
 	});
 
-	// 2. calculate CURRENT points
+	// calculate points from predictions using valid matches only
 	calculatePredictionPoints({
 		leaderboard,
 		predictions,
@@ -22,10 +22,10 @@ export function calculateLeaderboard({
 		effectiveDay,
 	});
 
-	// 3. current ranking
+	// sort leaderboard and assign positions (including tie logic)
 	rankLeaderboard(leaderboard);
 
-	// 4. compare with PREVIOUS ranking
+	// compute previous positions for delta comparison (Δ Pos)
 	buildPreviousLeaderboard({
 		leaderboard,
 		participants,
@@ -33,5 +33,9 @@ export function calculateLeaderboard({
 		predictions,
 	});
 
-	return leaderboard;
+	// return final computed leaderboard + current effective day
+	return {
+		leaderboard,
+		effectiveDay,
+	};
 }

@@ -2,15 +2,19 @@ import { POINTS } from "./constants";
 import type { Match, Prediction } from "./types";
 
 function calculatePoints(match: Match, prediction: Prediction) {
+	// check if exact score prediction
 	const isExact =
 		match.home_score === prediction.pred_home &&
 		match.away_score === prediction.pred_away;
 
+	// determine match result direction (home win, draw, away win)
 	const actual = Math.sign(match.home_score! - match.away_score!);
 	const predicted = Math.sign(prediction.pred_home - prediction.pred_away);
 
+	// check if correct outcome (winner/draw)
 	const isCorrect = actual === predicted;
 
+	// return points based on accuracy
 	if (isExact) return { points: POINTS.exactHits, type: "exact" };
 	if (isCorrect) return { points: POINTS.correctHits, type: "correct" };
 
@@ -24,26 +28,36 @@ export function calculatePredictionPoints({
 	effectiveDay,
 }: any) {
 	for (const pred of predictions) {
+		// find participant entry
 		const entry = leaderboard.find((l: any) => l.id === pred.participant_id);
 		const match = matchMap.get(pred.match_id);
 
 		if (!entry || !match) continue;
+
+		// skip matches that are not published yet
+		if (match.status == null) continue;
+
+		// skip unfinished matches
 		if (match.home_score == null || match.away_score == null) continue;
 
-		// optional filter (keep your logic)
+		// ignore future matches beyond current day
 		if (match.day > effectiveDay) continue;
 
 		const { points, type } = calculatePoints(match, pred);
 
+		// add total points
 		entry.points += points;
 
+		// update hit counters
 		if (type === "exact") entry.exactHits++;
-		else if (type === "correct") entry.correctWinner++;
+		else if (type === "correct") entry.correctHits++;
 		else entry.wrong++;
 
+		// track special categories
 		if (match.is_brazil) entry.brazilPoints += points;
 		if (match.day === effectiveDay) entry.todayPoints += points;
 
+		// track by competition stage
 		if (match.round === "R1") entry.round1 += points;
 		if (match.round === "R2") entry.round2 += points;
 		if (match.round === "R3") entry.round3 += points;

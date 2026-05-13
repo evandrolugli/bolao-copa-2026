@@ -27,7 +27,7 @@ export function buildPreviousLeaderboard({
 		position: null,
 		points: 0,
 		exactHits: 0,
-		correctWinner: 0,
+		correctHits: 0,
 		wrong: 0,
 		brazilPoints: 0,
 		todayPoints: 0,

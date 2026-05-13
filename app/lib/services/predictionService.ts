@@ -1,4 +1,4 @@
-import { fetchGoogleSheet } from "../googleSheets/fetchSheet";
+import { fetchSheet } from "../googleSheets/fetchSheet";
 import { scorePrediction } from "../utils/scorePrediction";
 import type {
 	Match,
@@ -10,9 +10,9 @@ import type {
 
 export async function getPredictionsByMatch(): Promise<MatchWithPredictions[]> {
 	const [matches, participants, predictions] = await Promise.all([
-		fetchGoogleSheet("matches"),
-		fetchGoogleSheet("participants"),
-		fetchGoogleSheet("predictions"),
+		fetchSheet("matches"),
+		fetchSheet("participants"),
+		fetchSheet("predictions"),
 	]);
 
 	const typedMatches = matches as Match[];

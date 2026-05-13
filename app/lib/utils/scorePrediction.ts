@@ -3,6 +3,7 @@ import type {
 	PredictionWithParticipant,
 	ScoredPrediction,
 } from "../utils/types";
+import { MATCH_STATUS, POINTS } from "./constants";
 
 function getOutcome(home: number, away: number) {
 	if (home > away) return "HOME";
@@ -14,20 +15,20 @@ export function scorePrediction(
 	pred: PredictionWithParticipant,
 	match: Match,
 ): ScoredPrediction {
-	// not published
-	if (match.status !== "publicar") {
+	// match not published
+	if (match.status !== MATCH_STATUS.PUBLISHED) {
 		return {
 			...pred,
-			points: 0,
+			points: POINTS.wrong,
 			status: "pending",
 		};
 	}
 
-	// no result yet
+	// no final result yet
 	if (match.home_score === null || match.away_score === null) {
 		return {
 			...pred,
-			points: 0,
+			points: POINTS.wrong,
 			status: "pending",
 		};
 	}
@@ -38,25 +39,28 @@ export function scorePrediction(
 	if (isExact) {
 		return {
 			...pred,
-			points: 3,
+			points: POINTS.exactHits,
 			status: "exact",
 		};
 	}
 
 	const predOutcome = getOutcome(pred.pred_home, pred.pred_away);
+
 	const realOutcome = getOutcome(match.home_score, match.away_score);
 
-	if (predOutcome === realOutcome) {
+	const isCorrect = predOutcome === realOutcome;
+
+	if (isCorrect) {
 		return {
 			...pred,
-			points: 1,
+			points: POINTS.correctHits,
 			status: "correct",
 		};
 	}
 
 	return {
 		...pred,
-		points: 0,
+		points: POINTS.wrong,
 		status: "wrong",
 	};
 }

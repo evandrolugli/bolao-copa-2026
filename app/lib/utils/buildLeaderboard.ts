@@ -10,12 +10,13 @@ export function buildLeaderboard({
 	participants,
 	matches,
 }: BuildLeaderboardParams) {
+	// base leaderboard structure
 	const leaderboard = participants.map((p) => ({
 		...p,
 		position: null,
 		points: 0,
 		exactHits: 0,
-		correctWinner: 0,
+		correctHits: 0,
 		wrong: 0,
 		brazilPoints: 0,
 		todayPoints: 0,
@@ -28,17 +29,20 @@ export function buildLeaderboard({
 		phase2: 0,
 	}));
 
-	const publishedMatches = matches.filter(
-		(m) => m.status === MATCH_STATUS.PUBLISHED,
-	);
+	// build matchMap from ALL matches
+	const matchMap = new Map<number, Match>(matches.map((m) => [m.id, m]));
 
-	const effectiveDay = publishedMatches.length
-		? Math.max(...publishedMatches.map((m) => m.day))
-		: 0;
+	let effectiveDay = 0;
 
-	const matchMap = new Map<number, Match>(
-		publishedMatches.map((m) => [m.id, m]),
-	);
+	for (const m of matches) {
+		if (
+			m.status === MATCH_STATUS.PUBLISHED &&
+			m.home_score != null &&
+			m.away_score != null
+		) {
+			effectiveDay = Math.max(effectiveDay, m.day);
+		}
+	}
 
 	return {
 		leaderboard,
