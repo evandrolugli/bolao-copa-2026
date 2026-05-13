@@ -7,3 +7,9 @@ export const POINTS = {
 export const MATCH_STATUS = {
 	PUBLISHED: "publicar",
 } as const;
+
+export const PREDICTION_STATUS = {
+	PENDING: "pending",
+	EXACT: "exact",
+	CORRECT: "correct",
+} as const;

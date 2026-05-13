@@ -1,50 +1,60 @@
 "use client";
 
 import { useState } from "react";
+import { MATCH_STATUS, PREDICTION_STATUS } from "../lib/utils/constants";
 import type { MatchWithPredictions } from "../lib/utils/types";
+
+// helper: check if match is published
+function isMatchPublished(match: { status: string | null }) {
+	return match.status === MATCH_STATUS.PUBLISHED;
+}
+
+// helper: badge style based on prediction result
+function getBadgeClass(status: string) {
+	switch (status) {
+		case PREDICTION_STATUS.EXACT:
+			return "bg-green-200 text-green-800";
+		case PREDICTION_STATUS.CORRECT:
+			return "bg-yellow-200 text-yellow-800";
+		default:
+			return "bg-red-200 text-red-700";
+	}
+}
 
 export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 	const [open, setOpen] = useState(false);
 
-	// 🧠 helper: match is published
-	const isPublished = match.status === "publicar";
+	const isPublished = isMatchPublished(match);
 
-	// 🧠 helper: points badge style
-	const getBadgeClass = (status: string) => {
-		if (status === "exact") return "bg-green-200 text-green-800";
-		if (status === "winner") return "bg-yellow-200 text-yellow-800";
-		return "bg-red-200 text-red-700";
-	};
-
-	// 🧠 helper: score display
-	const renderScore = () => {
+	// helper: render match score
+	function renderScore() {
 		if (!isPublished) {
-			return <p className="text-xs text-zinc-400">not published</p>;
+			return <p className="text-xs text-zinc-400">Pendente</p>;
 		}
 
 		return (
 			<p className="font-bold">
-				{match.home_score ?? "-"} : {match.away_score ?? "-"}
+				{match.home_score ?? "-"} x {match.away_score ?? "-"}
 			</p>
 		);
-	};
+	}
 
 	return (
 		<div className="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
 			{/* HEADER */}
 			<button
-				onClick={() => setOpen(!open)}
+				onClick={() => setOpen((prev) => !prev)}
 				className="w-full flex justify-between items-center p-4 bg-zinc-900 text-white"
 			>
 				<div className="text-left">
-					<p className="text-xs text-zinc-300">Round {match.round}</p>
+					<p className="text-xs text-zinc-300">Dia: {match.day}</p>
 					<p className="font-bold">
 						{match.home} vs {match.away}
 					</p>
 				</div>
 
 				<div className="text-right">
-					<p className="text-xs text-zinc-300">Score</p>
+					<p className="text-xs text-zinc-300">Resultado</p>
 					{renderScore()}
 				</div>
 			</button>
@@ -53,7 +63,8 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 			{open && (
 				<div className="p-3 space-y-2">
 					{match.predictions.map((p) => {
-						const showPoints = isPublished && p.status !== "pending";
+						const canShowPoints =
+							isPublished && p.status !== PREDICTION_STATUS.PENDING;
 
 						return (
 							<div
@@ -63,19 +74,17 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 								{/* name */}
 								<span className="font-medium">{p.participant.name}</span>
 
-								{/* prediction + score */}
+								{/* prediction + points */}
 								<div className="flex items-center gap-3">
 									<span className="font-semibold">
-										{p.pred_home} - {p.pred_away}
+										{p.pred_home} x {p.pred_away}
 									</span>
 
-									{/* badge */}
-									{showPoints ? (
+									{canShowPoints ? (
 										<span
-											className={`
-												text-xs px-2 py-1 rounded-md font-semibold
-												${getBadgeClass(p.status)}
-											`}
+											className={`text-xs px-2 py-1 rounded-md font-semibold ${getBadgeClass(
+												p.status,
+											)}`}
 										>
 											{p.points}
 										</span>
