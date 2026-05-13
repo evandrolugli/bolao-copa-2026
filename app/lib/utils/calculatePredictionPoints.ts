@@ -1,11 +1,12 @@
 import { POINTS } from "./constants";
+import type { Match, Prediction } from "./types";
 
-function calculatePoints(match, prediction) {
+function calculatePoints(match: Match, prediction: Prediction) {
 	const isExact =
 		match.home_score === prediction.pred_home &&
 		match.away_score === prediction.pred_away;
 
-	const actual = Math.sign(match.home_score - match.away_score);
+	const actual = Math.sign(match.home_score! - match.away_score!);
 	const predicted = Math.sign(prediction.pred_home - prediction.pred_away);
 
 	const isCorrect = actual === predicted;
@@ -21,14 +22,16 @@ export function calculatePredictionPoints({
 	predictions,
 	matchMap,
 	effectiveDay,
-}) {
+}: any) {
 	for (const pred of predictions) {
-		const entry = leaderboard.find((l) => l.id === pred.participant_id);
-
+		const entry = leaderboard.find((l: any) => l.id === pred.participant_id);
 		const match = matchMap.get(pred.match_id);
 
 		if (!entry || !match) continue;
 		if (match.home_score == null || match.away_score == null) continue;
+
+		// optional filter (keep your logic)
+		if (match.day > effectiveDay) continue;
 
 		const { points, type } = calculatePoints(match, pred);
 

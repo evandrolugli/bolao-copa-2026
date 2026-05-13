@@ -1,33 +1,37 @@
 import { buildLeaderboard } from "./buildLeaderboard";
 import { buildPreviousLeaderboard } from "./buildPreviousLeaderboard";
+import { calculatePredictionPoints } from "./calculatePredictionPoints";
 import { rankLeaderboard } from "./rankLeaderboard";
-import type { Match, Participant, Prediction } from "./types";
 
-type CalculateLeaderboardData = {
-	participants: Participant[];
-	matches: Match[];
-	predictions: Prediction[];
-};
-
-export function calculateLeaderboard(data: CalculateLeaderboardData) {
-	const { participants, matches, predictions } = data;
-
+export function calculateLeaderboard({
+	participants,
+	matches,
+	predictions,
+}: any) {
+	// 1. base leaderboard
 	const { leaderboard, matchMap, effectiveDay } = buildLeaderboard({
 		participants,
 		matches,
-		predictions,
 	});
 
-	buildPreviousLeaderboard({
+	// 2. calculate CURRENT points
+	calculatePredictionPoints({
 		leaderboard,
-		participants,
-		matches,
 		predictions,
 		matchMap,
 		effectiveDay,
 	});
 
+	// 3. current ranking
 	rankLeaderboard(leaderboard);
+
+	// 4. compare with PREVIOUS ranking
+	buildPreviousLeaderboard({
+		leaderboard,
+		participants,
+		matches,
+		predictions,
+	});
 
 	return leaderboard;
 }

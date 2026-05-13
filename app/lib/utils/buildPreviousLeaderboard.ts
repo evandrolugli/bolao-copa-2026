@@ -1,89 +1,69 @@
-import { POINTS } from "./constants";
-import type { Match, Participant, Prediction } from "./types";
-
-type BuildPreviousLeaderboardParams = {
-	leaderboard: any[];
-	participants: Participant[];
-	matches: Match[];
-	predictions: Prediction[];
-	matchMap: Map<number, Match>;
-	effectiveDay: number;
-};
-
-type PreviousEntry = {
-	id: number;
-	name: string;
-	points: number;
-	exactHits: number;
-	correctWinner: number;
-	wrong: number;
-	brazilPoints: number;
-};
+import { calculatePredictionPoints } from "./calculatePredictionPoints";
+import { rankLeaderboard } from "./rankLeaderboard";
 
 export function buildPreviousLeaderboard({
 	leaderboard,
 	participants,
 	matches,
 	predictions,
-	matchMap,
-	effectiveDay,
-}: BuildPreviousLeaderboardParams) {
-	if (effectiveDay <= 1) return;
+}: any) {
+	// no previous day yet
+	const publishedMatches = matches.filter((m: any) => m.status === "publicar");
 
-	const previousMap = new Map<number, PreviousEntry>();
+	if (publishedMatches.length === 0) return;
 
-	for (const p of participants) {
-		previousMap.set(p.id, {
-			id: p.id,
-			name: p.name,
-			points: 0,
-			exactHits: 0,
-			correctWinner: 0,
-			wrong: 0,
-			brazilPoints: 0,
-		});
-	}
+	const currentDay = Math.max(...publishedMatches.map((m: any) => m.day));
 
-	for (const pred of predictions) {
-		const entry = previousMap.get(pred.participant_id);
-		const match = matchMap.get(pred.match_id);
+	if (currentDay <= 1) return;
 
-		if (!entry || !match) continue;
-		if (match.day >= effectiveDay) continue;
-		if (match.home_score == null || match.away_score == null) continue;
-
-		const isExact =
-			match.home_score === pred.pred_home &&
-			match.away_score === pred.pred_away;
-
-		const actual = Math.sign(match.home_score - match.away_score);
-		const predicted = Math.sign(pred.pred_home - pred.pred_away);
-
-		const isWinner = actual === predicted;
-
-		if (isExact) entry.points += POINTS.exactHits;
-		else if (isWinner) entry.points += POINTS.correctHits;
-
-		if (match.is_brazil) {
-			entry.brazilPoints += entry.points;
-		}
-	}
-
-	const previousArr = Array.from(previousMap.values());
-
-	previousArr.sort((a, b) => b.points - a.points);
-
-	const previousPositions = new Map<number, number>(
-		previousArr.map((p, i) => [p.id, i + 1]),
+	// ONLY matches before current day
+	const previousMatches = publishedMatches.filter(
+		(m: any) => m.day < currentDay,
 	);
 
-	for (const entry of leaderboard) {
-		const prevPos = previousPositions.get(entry.id);
+	// build previous leaderboard
+	const previousLeaderboard = participants.map((p: any) => ({
+		...p,
+		position: null,
+		points: 0,
+		exactHits: 0,
+		correctWinner: 0,
+		wrong: 0,
+		brazilPoints: 0,
+		todayPoints: 0,
+		previousPosition: null,
+		positionChange: 0,
+		round1: 0,
+		round2: 0,
+		round3: 0,
+		phase1: 0,
+		phase2: 0,
+	}));
 
-		entry.previousPosition = prevPos ?? null;
+	// previous match map
+	const previousMatchMap = new Map(previousMatches.map((m: any) => [m.id, m]));
 
-		if (prevPos && entry.position != null) {
-			entry.positionChange = prevPos - entry.position;
+	// APPLY SAME SCORING ENGINE
+	calculatePredictionPoints({
+		leaderboard: previousLeaderboard,
+		predictions,
+		matchMap: previousMatchMap,
+		effectiveDay: currentDay - 1,
+	});
+
+	// rank previous standings
+	rankLeaderboard(previousLeaderboard);
+
+	// compare positions
+	for (const current of leaderboard) {
+		const previous = previousLeaderboard.find((p: any) => p.id === current.id);
+
+		if (!previous) continue;
+
+		current.previousPosition = previous.position;
+
+		if (current.position != null && previous.position != null) {
+			current.positionChange = previous.position - current.position;
 		}
 	}
 }

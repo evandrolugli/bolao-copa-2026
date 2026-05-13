@@ -1,4 +1,4 @@
-export function rankLeaderboard(leaderboard) {
+export function rankLeaderboard(leaderboard: any[]) {
 	leaderboard.sort((a, b) => {
 		if (b.points !== a.points) return b.points - a.points;
 		if (b.exactHits !== a.exactHits) return b.exactHits - a.exactHits;
@@ -20,7 +20,6 @@ export function rankLeaderboard(leaderboard) {
 			prev.brazilPoints === current.brazilPoints;
 
 		current.position = isTie ? prev.position : position;
-
 		position++;
 	}
 }
