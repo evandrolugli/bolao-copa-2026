@@ -1,4 +1,24 @@
+import type { Match, Participant, Prediction } from "../types";
 import { POINTS } from "./constants";
+
+type BuildPreviousLeaderboardParams = {
+	leaderboard: any[];
+	participants: Participant[];
+	matches: Match[];
+	predictions: Prediction[];
+	matchMap: Map<number, Match>;
+	effectiveDay: number;
+};
+
+type PreviousEntry = {
+	id: number;
+	name: string;
+	points: number;
+	exactHits: number;
+	correctWinner: number;
+	wrong: number;
+	brazilPoints: number;
+};
 
 export function buildPreviousLeaderboard({
 	leaderboard,
@@ -7,14 +27,15 @@ export function buildPreviousLeaderboard({
 	predictions,
 	matchMap,
 	effectiveDay,
-}) {
+}: BuildPreviousLeaderboardParams) {
 	if (effectiveDay <= 1) return;
 
-	const previousMap = new Map();
+	const previousMap = new Map<number, PreviousEntry>();
 
 	for (const p of participants) {
 		previousMap.set(p.id, {
-			...p,
+			id: p.id,
+			name: p.name,
 			points: 0,
 			exactHits: 0,
 			correctWinner: 0,
@@ -43,21 +64,25 @@ export function buildPreviousLeaderboard({
 		if (isExact) entry.points += POINTS.exactHits;
 		else if (isWinner) entry.points += POINTS.correctHits;
 
-		if (match.is_brazil) entry.brazilPoints += entry.points;
+		if (match.is_brazil) {
+			entry.brazilPoints += entry.points;
+		}
 	}
 
 	const previousArr = Array.from(previousMap.values());
 
 	previousArr.sort((a, b) => b.points - a.points);
 
-	const previousPositions = new Map(previousArr.map((p, i) => [p.id, i + 1]));
+	const previousPositions = new Map<number, number>(
+		previousArr.map((p, i) => [p.id, i + 1]),
+	);
 
 	for (const entry of leaderboard) {
 		const prevPos = previousPositions.get(entry.id);
 
 		entry.previousPosition = prevPos ?? null;
 
-		if (prevPos) {
+		if (prevPos && entry.position != null) {
 			entry.positionChange = prevPos - entry.position;
 		}
 	}
