@@ -1,5 +1,5 @@
-import type { Match, Participant, Prediction } from "../types";
 import { POINTS } from "./constants";
+import type { Match, Participant, Prediction } from "./types";
 
 type BuildPreviousLeaderboardParams = {
 	leaderboard: any[];
