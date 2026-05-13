@@ -271,18 +271,18 @@ export default async function LeaderboardPage() {
 										<td className="p-3 text-center">
 											<div
 												className={`
-											inline-flex items-center gap-1 font-semibold text-sm
-											transition-all duration-200 px-2 py-1 rounded-lg
-											${
-												participant.previousPosition !== null &&
-												isMaxAbs(
-													participant.positionChange,
-													maxValues.positionChange,
-												)
-													? "bg-violet-200"
-													: ""
-											}
-										`}
+												inline-flex items-center gap-1 font-semibold text-sm
+												transition-all duration-200 px-2 py-1 rounded-lg
+													${
+														participant.previousPosition !== null &&
+														isMaxAbs(
+															participant.positionChange,
+															maxValues.positionChange,
+														)
+															? "bg-violet-200"
+															: ""
+													}
+												`}
 											>
 												{participant.previousPosition === null ? (
 													<span className="text-zinc-400">—</span>

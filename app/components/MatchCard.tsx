@@ -4,6 +4,16 @@ import { useState } from "react";
 import { MATCH_STATUS, PREDICTION_STATUS } from "../lib/utils/constants";
 import type { MatchWithPredictions } from "../lib/utils/types";
 
+function sortPredictions(predictions: any[]) {
+	return [...predictions].sort((a, b) => {
+		// points first (descending)
+		if (b.points !== a.points) return b.points - a.points;
+
+		// then alphabetical by name
+		return a.participant.name.localeCompare(b.participant.name);
+	});
+}
+
 // helper: check if match is published
 function isMatchPublished(match: { status: string | null }) {
 	return match.status === MATCH_STATUS.PUBLISHED;
@@ -62,7 +72,7 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 			{/* BODY */}
 			{open && (
 				<div className="p-3 space-y-2">
-					{match.predictions.map((p) => {
+					{sortPredictions(match.predictions).map((p) => {
 						const canShowPoints =
 							isPublished && p.status !== PREDICTION_STATUS.PENDING;
 

@@ -58,11 +58,11 @@ export function calculatePredictionPoints({
 		if (match.day === effectiveDay) entry.todayPoints += points;
 
 		// track by competition stage
-		if (match.round === "R1") entry.round1 += points;
-		if (match.round === "R2") entry.round2 += points;
-		if (match.round === "R3") entry.round3 += points;
+		if (match.round === "Rodada 1") entry.round1 += points;
+		if (match.round === "Rodada 2") entry.round2 += points;
+		if (match.round === "Rodada 3") entry.round3 += points;
 
-		if (match.phase === "grupo") entry.phase1 += points;
-		if (match.phase === "fase 2") entry.phase2 += points;
+		if (match.phase !== "Fase 2") entry.phase1 += points;
+		if (match.phase === "Fase 2") entry.phase2 += points;
 	}
 }
