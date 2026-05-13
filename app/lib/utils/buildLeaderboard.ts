@@ -1,8 +1,33 @@
 import type { Match, Participant } from "../utils/types";
 import { MATCH_STATUS } from "./constants";
 
-export function buildLeaderboard({ participants, matches }) {
-	const leaderboardMap = new Map<number, any>();
+type BuildLeaderboardParams = {
+	participants: Participant[];
+	matches: Match[];
+};
+
+type LeaderboardEntry = Participant & {
+	position: number | null;
+	points: number;
+	exactHits: number;
+	correctWinner: number;
+	wrong: number;
+	brazilPoints: number;
+	todayPoints: number;
+	previousPosition: number | null;
+	positionChange: number;
+	round1: number;
+	round2: number;
+	round3: number;
+	phase1: number;
+	phase2: number;
+};
+
+export function buildLeaderboard({
+	participants,
+	matches,
+}: BuildLeaderboardParams) {
+	const leaderboardMap = new Map<number, LeaderboardEntry>();
 
 	for (const p of participants) {
 		leaderboardMap.set(p.id, {
