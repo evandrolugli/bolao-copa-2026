@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
-import { getStandings } from "../lib/services/standingsService";
+import { getLeaderboard } from "../lib/services/leaderboardService";
 
-type Standing = {
+type LeaderboardEntry = {
 	id: number;
 	name: string;
 	position: number | null;
@@ -22,8 +22,8 @@ type Standing = {
 	phase2: number;
 };
 
-export default async function StandingsPage() {
-	const { standings, day, matchesCount } = await getStandings();
+export default async function LeaderboardPage() {
+	const { leaderboard, day, matchesCount } = await getLeaderboard();
 
 	const maxValues = {
 		exactHits: 0,
@@ -37,7 +37,7 @@ export default async function StandingsPage() {
 		phase2: 0,
 	};
 
-	for (const p of standings) {
+	for (const p of leaderboard) {
 		maxValues.exactHits = Math.max(maxValues.exactHits, p.exactHits);
 		maxValues.brazilPoints = Math.max(maxValues.brazilPoints, p.brazilPoints);
 		maxValues.todayPoints = Math.max(maxValues.todayPoints, p.todayPoints);
@@ -81,7 +81,6 @@ export default async function StandingsPage() {
 								<p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
 									Jogos
 								</p>
-
 								<p className="text-2xl font-bold text-zinc-900">
 									{matchesCount}
 								</p>
@@ -92,7 +91,6 @@ export default async function StandingsPage() {
 								<p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
 									Dia
 								</p>
-
 								<p className="text-2xl font-bold text-zinc-900">{day}</p>
 							</div>
 						</div>
@@ -111,23 +109,18 @@ export default async function StandingsPage() {
 									Participantes
 								</th>
 
-								{/* PTS */}
 								<th className="w-16 p-3 bg-emerald-700 text-emerald-100 font-semibold">
 									PTS
 								</th>
 
 								<th className="w-16 p-3 font-semibold">Em cheio</th>
-
 								<th className="w-16 p-3 font-semibold">Desfechos</th>
-
 								<th className="w-16 p-3 font-semibold">Erros</th>
 
-								{/* Brasil */}
 								<th className="w-16 p-3 bg-amber-200/20 text-amber-200 font-semibold border-l border-amber-200/20">
 									Brasil
 								</th>
 
-								{/* Diff */}
 								<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-200/20">
 									Δ Pts
 								</th>
@@ -136,7 +129,6 @@ export default async function StandingsPage() {
 									Δ Pos
 								</th>
 
-								{/* Secondary */}
 								<th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold border-l border-zinc-200/20">
 									R1
 								</th>
@@ -160,8 +152,8 @@ export default async function StandingsPage() {
 						</thead>
 
 						<tbody>
-							{standings.map((participant, index) => {
-								const prevPosition = standings[index - 1]?.position;
+							{leaderboard.map((participant, index) => {
+								const prevPosition = leaderboard[index - 1]?.position;
 
 								const showPosition =
 									participant.position !== null &&
@@ -176,11 +168,11 @@ export default async function StandingsPage() {
 									<tr
 										key={participant.id}
 										className={`
-                    border-t border-zinc-200
-                    transition-colors duration-200
-                    text-center
-                    ${topThree}
-                  `}
+										border-t border-zinc-200
+										transition-colors duration-200
+										text-center
+										${topThree}
+									`}
 									>
 										{/* Position */}
 										<td className="p-3 font-bold text-base text-amber-700">
@@ -198,15 +190,15 @@ export default async function StandingsPage() {
 										<td className="p-3 bg-emerald-50">
 											<div
 												className={`
-												inline-flex items-center justify-center
-												min-w-[52px] h-8 px-3 rounded-lg
-												font-bold text-base
-												${
-													index <= 2
-														? "bg-emerald-200 text-emerald-900"
-														: "text-emerald-700"
-												}
-                      `}
+											inline-flex items-center justify-center
+											min-w-[52px] h-8 px-3 rounded-lg
+											font-bold text-base
+											${
+												index <= 2
+													? "bg-emerald-200 text-emerald-900"
+													: "text-emerald-700"
+											}
+										`}
 											>
 												{participant.points}
 											</div>
@@ -216,14 +208,14 @@ export default async function StandingsPage() {
 										<td className="p-3">
 											<div
 												className={`
-                        						inline-flex items-center justify-center
-                        						min-w-10 h-8 px-2 rounded-lg
-												${
-													isMax(participant.exactHits, maxValues.exactHits)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-												`}
+											inline-flex items-center justify-center
+											min-w-10 h-8 px-2 rounded-lg
+											${
+												isMax(participant.exactHits, maxValues.exactHits)
+													? "bg-violet-200 text-violet-900 font-bold"
+													: ""
+											}
+										`}
 											>
 												{participant.exactHits}
 											</div>
@@ -231,11 +223,7 @@ export default async function StandingsPage() {
 
 										{/* Winner */}
 										<td className="p-3">
-											<div
-												className="
-                        inline-flex items-center justify-center
-                        min-w-10 h-8 px-2 rounded-lg"
-											>
+											<div className="inline-flex items-center justify-center min-w-10 h-8 px-2 rounded-lg">
 												{participant.correctWinner}
 											</div>
 										</td>
@@ -247,36 +235,31 @@ export default async function StandingsPage() {
 										<td className="p-3 border-l border-zinc-200">
 											<div
 												className={`
-                        inline-flex items-center justify-center
-                        min-w-10 h-8 px-2 rounded-lg
-
-                        ${
-													isMax(
-														participant.brazilPoints,
-														maxValues.brazilPoints,
-													)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: "text-amber-700"
-												}
-                      `}
+											inline-flex items-center justify-center
+											min-w-10 h-8 px-2 rounded-lg
+											${
+												isMax(participant.brazilPoints, maxValues.brazilPoints)
+													? "bg-violet-200 text-violet-900 font-bold"
+													: "text-amber-700"
+											}
+										`}
 											>
 												{participant.brazilPoints}
 											</div>
 										</td>
 
-										{/* Diff Points */}
+										{/* Δ Points */}
 										<td className="p-3 border-l border-zinc-200">
 											<div
 												className={`
-                        inline-flex items-center justify-center
-                        min-w-[48px] h-8 px-2 rounded-lg font-semibold
-
-                        ${
-													isMax(participant.todayPoints, maxValues.todayPoints)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: "text-sky-700"
-												}
-                      `}
+											inline-flex items-center justify-center
+											min-w-[48px] h-8 px-2 rounded-lg font-semibold
+											${
+												isMax(participant.todayPoints, maxValues.todayPoints)
+													? "bg-violet-200 text-violet-900 font-bold"
+													: "text-sky-700"
+											}
+										`}
 											>
 												{participant.todayPoints > 0
 													? `+${participant.todayPoints}`
@@ -284,20 +267,22 @@ export default async function StandingsPage() {
 											</div>
 										</td>
 
-										{/* Diff Position */}
+										{/* Δ Position */}
 										<td className="p-3 text-center">
 											<div
 												className={`
-      inline-flex items-center gap-1 font-semibold text-sm
-      transition-all duration-200 px-2 py-1 rounded-lg
-
-      ${
-				participant.previousPosition !== null &&
-				isMaxAbs(participant.positionChange, maxValues.positionChange)
-					? "bg-violet-200"
-					: ""
-			}
-    `}
+											inline-flex items-center gap-1 font-semibold text-sm
+											transition-all duration-200 px-2 py-1 rounded-lg
+											${
+												participant.previousPosition !== null &&
+												isMaxAbs(
+													participant.positionChange,
+													maxValues.positionChange,
+												)
+													? "bg-violet-200"
+													: ""
+											}
+										`}
 											>
 												{participant.previousPosition === null ? (
 													<span className="text-zinc-400">—</span>
@@ -321,95 +306,16 @@ export default async function StandingsPage() {
 											</div>
 										</td>
 
-										{/* Round 1 */}
-										<td className="p-3 border-l border-zinc-200">
-											<div
-												className={`
-                        inline-flex items-center justify-center
-                        min-w-[38px] h-8 px-2 rounded-lg
-
-                        ${
-													isMax(participant.round1, maxValues.round1)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-                      `}
-											>
-												{participant.round1}
-											</div>
-										</td>
-
-										{/* Round 2 */}
-										<td className="p-3">
-											<div
-												className={`
-                        inline-flex items-center justify-center
-                        min-w-[38px] h-8 px-2 rounded-lg
-
-                        ${
-													isMax(participant.round2, maxValues.round2)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-                      `}
-											>
-												{participant.round2}
-											</div>
-										</td>
-
-										{/* Round 3 */}
-										<td className="p-3">
-											<div
-												className={`
-                        inline-flex items-center justify-center
-                        min-w-[38px] h-8 px-2 rounded-lg
-
-                        ${
-													isMax(participant.round3, maxValues.round3)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-                      `}
-											>
-												{participant.round3}
-											</div>
-										</td>
-
-										{/* Phase 1 */}
-										<td className="p-3">
-											<div
-												className={`
-                        inline-flex items-center justify-center
-                        min-w-[42px] h-8 px-2 rounded-lg
-
-                        ${
-													isMax(participant.phase1, maxValues.phase1)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-                      `}
-											>
-												{participant.phase1}
-											</div>
-										</td>
-
-										{/* Phase 2 */}
-										<td className="p-3">
-											<div
-												className={`
-                        inline-flex items-center justify-center
-                        min-w-[42px] h-8 px-2 rounded-lg
-
-                        ${
-													isMax(participant.phase2, maxValues.phase2)
-														? "bg-violet-200 text-violet-900 font-bold"
-														: ""
-												}
-                      `}
-											>
-												{participant.phase2}
-											</div>
-										</td>
+										{/* Rounds */}
+										{["round1", "round2", "round3", "phase1", "phase2"].map(
+											(key) => (
+												<td key={key} className="p-3">
+													<div className="inline-flex items-center justify-center min-w-[42px] h-8 px-2 rounded-lg">
+														{participant[key as keyof typeof participant]}
+													</div>
+												</td>
+											),
+										)}
 									</tr>
 								);
 							})}

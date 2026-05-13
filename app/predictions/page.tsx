@@ -1,23 +1,22 @@
-export default function PredictionsPage() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">
-        Apostas
-      </h1>
+import MatchCard from "../components/MatchCard";
+import { getPredictionsByMatch } from "../lib/services/predictionService";
 
-      <p className="text-zinc-400">
-        Apostas dos participantes
-      </p>
+export const dynamic = "force-dynamic";
 
-      <div className="mt-6 space-y-3">
-        <div className="p-4 bg-zinc-900 rounded">
-          Brazil vs Serbia → 2-0
-        </div>
+export default async function PredictionsPage() {
+	const matches = await getPredictionsByMatch();
 
-        <div className="p-4 bg-zinc-900 rounded">
-          Argentina vs France → 1-1
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<main className="min-h-screen bg-zinc-100 p-6">
+			<div className="max-w-5xl mx-auto space-y-4">
+				<h1 className="text-3xl font-bold">Apostas</h1>
+
+				<div className="space-y-4">
+					{matches.map((match) => (
+						<MatchCard key={match.id} match={match} />
+					))}
+				</div>
+			</div>
+		</main>
+	);
 }

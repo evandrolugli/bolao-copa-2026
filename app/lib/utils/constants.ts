@@ -1,8 +1,9 @@
 export const POINTS = {
-    exact: 5,
-    result: 2,
-  };
+	exactHits: 5,
+	correctHits: 2,
+	wrong: 0,
+} as const;
 
-  export const MATCH_STATUS = {
-  PUBLISHED: "publicar",
-};
+export const MATCH_STATUS = {
+	PUBLISHED: "publicar",
+} as const;

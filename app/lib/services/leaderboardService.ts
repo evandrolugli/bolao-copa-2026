@@ -1,9 +1,10 @@
 import { fetchGoogleSheet } from "../googleSheets/fetchSheet";
 import { SHEETS } from "../googleSheets/sheetsConfig";
-import { calculateStandings } from "../utils/calculateStandings";
+import { calculateLeaderboard } from "../utils/calculateLeaderboard";
+import { MATCH_STATUS } from "../utils/constants";
 import type { Match, Participant, Prediction } from "../utils/types";
 
-export async function getStandings() {
+export async function getLeaderboard() {
 	// Fetch data
 	const [participants, matches, predictions] = await Promise.all([
 		fetchGoogleSheet<Participant>(SHEETS.PARTICIPANTS),
@@ -12,7 +13,9 @@ export async function getStandings() {
 	]);
 
 	// Only published matches
-	const publishedMatches = matches.filter((m) => m.status === "publicar");
+	const publishedMatches = matches.filter(
+		(m) => m.status === MATCH_STATUS.PUBLISHED,
+	);
 
 	// Latest day from published matches
 	const latestDay = publishedMatches.length
@@ -23,7 +26,7 @@ export async function getStandings() {
 	const scoringMatches = publishedMatches;
 
 	// Calculate standings
-	const standings = calculateStandings({
+	const leaderboard = calculateLeaderboard({
 		participants,
 		matches: scoringMatches,
 		predictions,
@@ -31,7 +34,7 @@ export async function getStandings() {
 
 	// Return result
 	return {
-		standings,
+		leaderboard,
 		day: latestDay,
 		matchesCount: scoringMatches.length,
 	};
