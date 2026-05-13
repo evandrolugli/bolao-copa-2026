@@ -1,9 +1,8 @@
-import type { Match, PredictionWithParticipant } from "../utils/types";
-
-export type ScoredPrediction = PredictionWithParticipant & {
-	points: number;
-	status: "exact" | "winner" | "wrong" | "pending";
-};
+import type {
+	Match,
+	PredictionWithParticipant,
+	ScoredPrediction,
+} from "../utils/types";
 
 function getOutcome(home: number, away: number) {
 	if (home > away) return "HOME";
@@ -15,7 +14,7 @@ export function scorePrediction(
 	pred: PredictionWithParticipant,
 	match: Match,
 ): ScoredPrediction {
-	// 🚨 NOT PUBLISHED → no scoring
+	// not published
 	if (match.status !== "publicar") {
 		return {
 			...pred,
@@ -44,9 +43,6 @@ export function scorePrediction(
 		};
 	}
 
-	const getOutcome = (h: number, a: number) =>
-		h > a ? "HOME" : h < a ? "AWAY" : "DRAW";
-
 	const predOutcome = getOutcome(pred.pred_home, pred.pred_away);
 	const realOutcome = getOutcome(match.home_score, match.away_score);
 
@@ -54,7 +50,7 @@ export function scorePrediction(
 		return {
 			...pred,
 			points: 1,
-			status: "winner",
+			status: "correct",
 		};
 	}
 

@@ -23,10 +23,17 @@ export type Prediction = {
 	pred_away: number;
 };
 
+export type PredictionStatus = "exact" | "correct" | "wrong" | "pending";
+
+export type ScoredPrediction = PredictionWithParticipant & {
+	points: number;
+	status: PredictionStatus;
+};
+
 export type PredictionWithParticipant = Prediction & {
 	participant: Participant;
 };
 
 export type MatchWithPredictions = Match & {
-	predictions: PredictionWithParticipant[];
+	predictions: ScoredPrediction[]; // ❗ change here
 };
