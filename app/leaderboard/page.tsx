@@ -125,11 +125,11 @@ export default async function LeaderboardPage() {
 									Δ Pts
 								</th>
 
-								<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold">
+								<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-r border-sky-200/20">
 									Δ Pos
 								</th>
 
-								<th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold border-l border-zinc-200/20">
+								<th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
 									R1
 								</th>
 
@@ -153,6 +153,7 @@ export default async function LeaderboardPage() {
 
 						<tbody>
 							{leaderboard.map((participant, index) => {
+								//const prevPosition = leaderboard[index - 1]?.position;
 								const prevPosition = leaderboard[index - 1]?.position;
 
 								const showPosition =
@@ -268,7 +269,7 @@ export default async function LeaderboardPage() {
 										</td>
 
 										{/* Δ Position */}
-										<td className="p-3 text-center">
+										<td className="p-3 text-center border-r border-zinc-200">
 											<div
 												className={`
 												inline-flex items-center gap-1 font-semibold text-sm

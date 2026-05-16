@@ -1,4 +1,4 @@
-import { POINTS } from "./constants";
+import { isMatchPublished, POINTS } from "./constants";
 import type { Match, Prediction } from "./types";
 
 function calculatePoints(match: Match, prediction: Prediction) {
@@ -34,11 +34,7 @@ export function calculatePredictionPoints({
 
 		if (!entry || !match) continue;
 
-		// skip matches that are not published yet
-		if (match.status == null) continue;
-
-		// skip unfinished matches
-		if (match.home_score == null || match.away_score == null) continue;
+		if (!isMatchPublished(match)) continue;
 
 		// ignore future matches beyond current day
 		if (match.day > effectiveDay) continue;

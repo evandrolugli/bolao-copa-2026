@@ -1,4 +1,5 @@
 import { calculatePredictionPoints } from "./calculatePredictionPoints";
+import { isMatchPublished } from "./constants";
 import { rankLeaderboard } from "./rankLeaderboard";
 
 export function buildPreviousLeaderboard({
@@ -7,8 +8,7 @@ export function buildPreviousLeaderboard({
 	matches,
 	predictions,
 }: any) {
-	// no previous day yet
-	const publishedMatches = matches.filter((m: any) => m.status === "publicar");
+	const publishedMatches = matches.filter(isMatchPublished);
 
 	if (publishedMatches.length === 0) return;
 

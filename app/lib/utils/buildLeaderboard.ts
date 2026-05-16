@@ -1,5 +1,5 @@
+import { isMatchPublished } from "../utils/constants";
 import type { Match, Participant } from "../utils/types";
-import { MATCH_STATUS } from "./constants";
 
 type BuildLeaderboardParams = {
 	participants: Participant[];
@@ -35,11 +35,7 @@ export function buildLeaderboard({
 	let effectiveDay = 0;
 
 	for (const m of matches) {
-		if (
-			m.status === MATCH_STATUS.PUBLISHED &&
-			m.home_score != null &&
-			m.away_score != null
-		) {
+		if (isMatchPublished(m)) {
 			effectiveDay = Math.max(effectiveDay, m.day);
 		}
 	}

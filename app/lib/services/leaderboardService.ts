@@ -1,7 +1,7 @@
 import { fetchSheet } from "../googleSheets/fetchSheet";
 import { SHEETS } from "../googleSheets/sheetsConfig";
 import { calculateLeaderboard } from "../utils/calculateLeaderboard";
-import { MATCH_STATUS } from "../utils/constants";
+import { isMatchPublished } from "../utils/constants";
 import type { Match, Participant, Prediction } from "../utils/types";
 
 export async function getLeaderboard() {
@@ -19,13 +19,8 @@ export async function getLeaderboard() {
 		predictions,
 	});
 
-	// count only published matches && score != null
-	const matchesCount = matches.filter(
-		(m) =>
-			m.status === MATCH_STATUS.PUBLISHED &&
-			m.home_score != null &&
-			m.away_score != null,
-	).length;
+	// count only published matches (status = "publicar" && score != null)
+	const matchesCount = matches.filter(isMatchPublished).length;
 
 	return {
 		leaderboard,

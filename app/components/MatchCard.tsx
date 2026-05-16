@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MATCH_STATUS, PREDICTION_STATUS } from "../lib/utils/constants";
+import { isMatchPublished, PREDICTION_STATUS } from "../lib/utils/constants";
 import type { MatchWithPredictions } from "../lib/utils/types";
 
 function sortPredictions(predictions: any[]) {
@@ -12,11 +12,6 @@ function sortPredictions(predictions: any[]) {
 		// then alphabetical by name
 		return a.participant.name.localeCompare(b.participant.name);
 	});
-}
-
-// helper: check if match is published
-function isMatchPublished(match: { status: string | null }) {
-	return match.status === MATCH_STATUS.PUBLISHED;
 }
 
 // helper: badge style based on prediction result
@@ -42,9 +37,13 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 			return <p className="text-xs text-zinc-400">Pendente</p>;
 		}
 
+		if (match.home_score == null || match.away_score == null) {
+			return <p className="text-xs text-zinc-400">Pendente</p>;
+		}
+
 		return (
 			<p className="font-bold">
-				{match.home_score ?? "-"} x {match.away_score ?? "-"}
+				{match.home_score} x {match.away_score}
 			</p>
 		);
 	}

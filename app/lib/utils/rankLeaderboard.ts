@@ -1,3 +1,5 @@
+import { printTreeView } from "next/dist/build/utils";
+
 export function rankLeaderboard(leaderboard: any[]) {
 	// sort participants by ranking rules (points → exact hits → brazil points → name)
 	leaderboard.sort((a, b) => {
@@ -15,14 +17,13 @@ export function rankLeaderboard(leaderboard: any[]) {
 		const prev = leaderboard[i - 1];
 
 		// check if current participant is tied with previous one
-		const isTie =
-			prev &&
-			prev.points === current.points &&
-			prev.exactHits === current.exactHits &&
-			prev.brazilPoints === current.brazilPoints;
+		const isTie = prev && prev.points === current.points;
+		//prev.exactHits === current.exactHits &&
+		//prev.brazilPoints === current.brazilPoints;
 
 		// keep same position for ties, otherwise assign next rank
 		current.position = isTie ? prev.position : position;
+
 		position++;
 	}
 }

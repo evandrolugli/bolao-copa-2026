@@ -3,7 +3,7 @@ import type {
 	PredictionWithParticipant,
 	ScoredPrediction,
 } from "../utils/types";
-import { MATCH_STATUS, POINTS } from "./constants";
+import { isMatchPublished, POINTS } from "./constants";
 
 function getOutcome(home: number, away: number) {
 	if (home > away) return "HOME";
@@ -15,17 +15,7 @@ export function scorePrediction(
 	pred: PredictionWithParticipant,
 	match: Match,
 ): ScoredPrediction {
-	// match not published
-	if (match.status !== MATCH_STATUS.PUBLISHED) {
-		return {
-			...pred,
-			points: POINTS.wrong,
-			status: "pending",
-		};
-	}
-
-	// no final result yet
-	if (match.home_score === null || match.away_score === null) {
+	if (!isMatchPublished(match)) {
 		return {
 			...pred,
 			points: POINTS.wrong,
@@ -45,7 +35,6 @@ export function scorePrediction(
 	}
 
 	const predOutcome = getOutcome(pred.pred_home, pred.pred_away);
-
 	const realOutcome = getOutcome(match.home_score, match.away_score);
 
 	const isCorrect = predOutcome === realOutcome;
