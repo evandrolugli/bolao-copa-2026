@@ -23,6 +23,19 @@ export type Prediction = {
 	pred_away: number;
 };
 
+export type FinalistsPrediction = {
+	participant_id: number;
+	champion: string;
+	vice: string;
+	third: string;
+	fourth: string;
+};
+
+export type Finalists = Record<
+	"champion" | "vice" | "third" | "fourth",
+	string
+>;
+
 export type PredictionStatus = "exact" | "correct" | "wrong" | "pending";
 
 export type ScoredPrediction = PredictionWithParticipant & {
@@ -35,5 +48,5 @@ export type PredictionWithParticipant = Prediction & {
 };
 
 export type MatchWithPredictions = Match & {
-	predictions: ScoredPrediction[]; // ❗ change here
+	predictions: ScoredPrediction[];
 };

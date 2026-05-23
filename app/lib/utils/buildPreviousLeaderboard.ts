@@ -38,6 +38,7 @@ export function buildPreviousLeaderboard({
 		round3: 0,
 		phase1: 0,
 		phase2: 0,
+		finalistsPoints: 0,
 	}));
 
 	// previous match map

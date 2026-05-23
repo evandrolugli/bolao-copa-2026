@@ -57,9 +57,7 @@ export default async function LeaderboardPage() {
 		return value === max && max !== 0;
 	}
 
-	function isMaxAbs(value: number, max: number) {
-		return Math.abs(value) === max && max !== 0;
-	}
+	const roundKeys = ["round1", "round2", "round3", "phase1", "phase2"] as const;
 
 	return (
 		<main className="min-h-screen bg-zinc-100 text-zinc-900 p-6">
@@ -153,7 +151,6 @@ export default async function LeaderboardPage() {
 
 						<tbody>
 							{leaderboard.map((participant, index) => {
-								//const prevPosition = leaderboard[index - 1]?.position;
 								const prevPosition = leaderboard[index - 1]?.position;
 
 								const showPosition =
@@ -222,7 +219,7 @@ export default async function LeaderboardPage() {
 											</div>
 										</td>
 
-										{/* Winner */}
+										{/* Correct */}
 										<td className="p-3">
 											<div className="inline-flex items-center justify-center min-w-10 h-8 px-2 rounded-lg">
 												{participant.correctHits}
@@ -276,7 +273,7 @@ export default async function LeaderboardPage() {
 												transition-all duration-200 px-2 py-1 rounded-lg
 													${
 														participant.previousPosition !== null &&
-														isMaxAbs(
+														isMax(
 															participant.positionChange,
 															maxValues.positionChange,
 														)
@@ -308,15 +305,22 @@ export default async function LeaderboardPage() {
 										</td>
 
 										{/* Rounds */}
-										{["round1", "round2", "round3", "phase1", "phase2"].map(
-											(key) => (
+										{roundKeys.map((key) => {
+											const value = participant[key];
+											const highlighted = isMax(value, maxValues[key]);
+
+											return (
 												<td key={key} className="p-3">
-													<div className="inline-flex items-center justify-center min-w-[42px] h-8 px-2 rounded-lg">
-														{participant[key as keyof typeof participant]}
+													<div
+														className={`inline-flex items-center justify-center min-w-[42px] h-8 px-2 rounded-lg
+															${highlighted ? "bg-violet-200 text-violet-900 font-bold" : ""}
+														`}
+													>
+														{value}
 													</div>
 												</td>
-											),
-										)}
+											);
+										})}
 									</tr>
 								);
 							})}

@@ -1,4 +1,5 @@
 import { isMatchPublished, POINTS } from "./constants";
+import { calculateFinalistsPoints } from "./finalistsPoints";
 import type { Match, Prediction } from "./types";
 
 function calculatePoints(match: Match, prediction: Prediction) {
@@ -26,6 +27,8 @@ export function calculatePredictionPoints({
 	predictions,
 	matchMap,
 	effectiveDay,
+	finalistsPredictions,
+	finalistsResult,
 }: any) {
 	for (const pred of predictions) {
 		// find participant entry
@@ -60,5 +63,17 @@ export function calculatePredictionPoints({
 
 		if (match.phase !== "Fase 2") entry.phase1 += points;
 		if (match.phase === "Fase 2") entry.phase2 += points;
+	}
+
+	// finalists points
+	for (const pred of finalistsPredictions || []) {
+		const entry = leaderboard.find((l: any) => l.id === pred.participant_id);
+
+		if (!entry) continue;
+
+		const points = calculateFinalistsPoints(pred, finalistsResult);
+
+		entry.points += points;
+		entry.finalistsPoints = (entry.finalistsPoints || 0) + points;
 	}
 }

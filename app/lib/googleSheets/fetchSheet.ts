@@ -21,10 +21,23 @@ export async function fetchSheet<T>(sheetName: string): Promise<T[]> {
 		// remove google wrapper and parse json
 		const json = JSON.parse(text.substring(47).slice(0, -2));
 
-		const columns = json.table.cols;
+		// const columns = json.table.cols;
+		// const rows = json.table.rows;
+		// const headers = columns.map((column: any) => column.label);
+
 		const rows = json.table.rows;
 
-		const headers = columns.map((column: any) => column.label);
+		// fallback headers from first row if labels are empty
+		const columns = json.table.cols || [];
+
+		let headers = columns.map((c: any) => c.label);
+
+		// if headers are empty → derive from first row structure
+		if (!headers.length || headers.every((h: string) => !h)) {
+			const firstRow = rows[0];
+
+			headers = firstRow?.c?.map((_: any, i: number) => `col_${i}`) || [];
+		}
 
 		// map rows into objects using column headers
 		return rows.map((row: any) => {

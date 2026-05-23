@@ -7,6 +7,8 @@ export function calculateLeaderboard({
 	participants,
 	matches,
 	predictions,
+	finalistsPredictions,
+	finalistsResult,
 }: any) {
 	// build base leaderboard + match lookup + current valid day
 	const { leaderboard, matchMap, effectiveDay } = buildLeaderboard({
@@ -20,6 +22,8 @@ export function calculateLeaderboard({
 		predictions,
 		matchMap,
 		effectiveDay,
+		finalistsPredictions,
+		finalistsResult,
 	});
 
 	// sort leaderboard and assign positions (including tie logic)
@@ -31,6 +35,8 @@ export function calculateLeaderboard({
 		participants,
 		matches,
 		predictions,
+		finalistsPredictions,
+		finalistsResult,
 	});
 
 	// return final computed leaderboard + current effective day
