@@ -7,6 +7,7 @@ export type Match = {
 	id: number;
 	phase: string;
 	round: string;
+	group: string;
 	home: string;
 	away: string;
 	home_score: number | null;
