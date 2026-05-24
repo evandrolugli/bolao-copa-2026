@@ -56,7 +56,7 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 				className="w-full flex justify-between items-center p-4 bg-zinc-900 text-white"
 			>
 				<div className="text-left">
-					<p className="text-xs text-zinc-300">{match.phase}</p>
+					<p className="text-xs text-zinc-300">{match.group}</p>
 					<p className="font-bold">
 						{match.home} vs {match.away}
 					</p>

@@ -8,7 +8,8 @@ export default function Header() {
 					Bolão
 				</Link>
 				<Link href="/leaderboard">Classificação</Link>
-				<Link href="/predictions">Apostas</Link>
+				<Link href="/predictions">Palpites</Link>
+				<Link href="/finalists">Finalistas</Link>
 			</div>
 		</header>
 	);

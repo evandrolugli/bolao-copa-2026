@@ -105,15 +105,14 @@ export default async function PredictionsPage({
 
 						return (
 							<div key={match.id}>
-								{/* Group Subtitle */}
+								{/* Group Subtitle
 								{showGroup && (
 									<div className="pt-4">
 										<h2 className="text-xl font-bold text-zinc-700">
 											{match.group}
 										</h2>
 									</div>
-								)}
-
+								)} */}
 								<MatchCard match={match} />
 							</div>
 						);

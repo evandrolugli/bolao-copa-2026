@@ -21,10 +21,6 @@ export async function fetchSheet<T>(sheetName: string): Promise<T[]> {
 		// remove google wrapper and parse json
 		const json = JSON.parse(text.substring(47).slice(0, -2));
 
-		// const columns = json.table.cols;
-		// const rows = json.table.rows;
-		// const headers = columns.map((column: any) => column.label);
-
 		const rows = json.table.rows;
 
 		// fallback headers from first row if labels are empty

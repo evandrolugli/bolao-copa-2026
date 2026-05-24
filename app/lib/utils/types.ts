@@ -30,6 +30,7 @@ export type FinalistsPrediction = {
 	vice: string;
 	third: string;
 	fourth: string;
+	participantName?: string;
 };
 
 export type Finalists = Record<
