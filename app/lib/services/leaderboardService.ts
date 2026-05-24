@@ -2,10 +2,45 @@ import { fetchSheet } from "../googleSheets/fetchSheet";
 import { SHEETS } from "../googleSheets/sheetsConfig";
 import { calculateLeaderboard } from "../utils/calculateLeaderboard";
 import { isMatchPublished } from "../utils/constants";
-import type { Finalists, Match, Participant, Prediction } from "../utils/types";
+import type {
+	Finalists,
+	FinalistsPrediction,
+	Match,
+	Participant,
+	Prediction,
+} from "../utils/types";
+
+type FinalistsRow = {
+	col_0?: string;
+	col_1?: string;
+};
+
+function parseFinalists(rows: FinalistsRow[]): Finalists {
+	const result: Finalists = {
+		champion: "",
+		vice: "",
+		third: "",
+		fourth: "",
+	};
+
+	for (const row of rows) {
+		const key = String(row.col_0 ?? "")
+			.trim()
+			.toLowerCase();
+
+		const value = String(row.col_1 ?? "").trim();
+
+		if (!key || !value) continue;
+
+		if (key in result) {
+			result[key as keyof Finalists] = value;
+		}
+	}
+
+	return result;
+}
 
 export async function getLeaderboard() {
-	// fetch all required data in parallel
 	const [
 		participants,
 		matches,
@@ -16,31 +51,12 @@ export async function getLeaderboard() {
 		fetchSheet<Participant>(SHEETS.PARTICIPANTS),
 		fetchSheet<Match>(SHEETS.MATCHES),
 		fetchSheet<Prediction>(SHEETS.PREDICTIONS),
-		fetchSheet(SHEETS.FINALISTS_PREDICTIONS),
-		fetchSheet(SHEETS.FINALISTS),
+		fetchSheet<FinalistsPrediction>(SHEETS.FINALISTS_PREDICTIONS),
+		fetchSheet<FinalistsRow>(SHEETS.FINALISTS),
 	]);
 
-	const finalistsResult: Finalists = {
-		champion: "",
-		vice: "",
-		third: "",
-		fourth: "",
-	};
+	const finalistsResult = parseFinalists(finalistsRows);
 
-	finalistsRows.forEach((row: any) => {
-		const keyRaw = String(row.col_0 ?? "")
-			.trim()
-			.toLowerCase();
-		const valueRaw = String(row.col_1 ?? "").trim();
-
-		if (!keyRaw || !valueRaw) return;
-
-		if (keyRaw in finalistsResult) {
-			finalistsResult[keyRaw as keyof Finalists] = valueRaw;
-		}
-	});
-
-	// build leaderboard from raw data
 	const { leaderboard, effectiveDay } = calculateLeaderboard({
 		participants,
 		matches,
@@ -49,7 +65,6 @@ export async function getLeaderboard() {
 		finalistsResult,
 	});
 
-	// count only published matches (status = "publicar" && score != null)
 	const matchesCount = matches.filter(isMatchPublished).length;
 
 	return {

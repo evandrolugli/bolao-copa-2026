@@ -4,38 +4,78 @@ export const dynamic = "force-dynamic";
 
 export default async function FinalistsPage() {
 	const finalists = await getFinalistsPredictionsWithNames();
-	console.log("Finalists Predictions:", finalists);
 
 	return (
-		<main className="min-h-screen bg-zinc-100 p-6">
-			<div className="max-w-4xl mx-auto">
-				<h1 className="text-3xl font-bold mb-6">Finalistas</h1>
+		<main className="min-h-screen bg-zinc-100 text-zinc-900 p-6">
+			<div className="max-w-5xl mx-auto">
+				{/* Header */}
+				<div className="mb-8">
+					<h1 className="text-4xl font-bold tracking-tight text-zinc-900">
+						Finalistas
+					</h1>
+				</div>
 
-				<div className="overflow-x-auto bg-white border rounded-2xl shadow">
-					<table className="w-full text-sm">
-						<thead className="bg-zinc-900 text-white">
-							<tr>
-								<th className="p-3 text-left">Participante</th>
-								<th className="p-3">Campeão</th>
-								<th className="p-3">Vice</th>
-								<th className="p-3">Terceiro</th>
-								<th className="p-3">Quarto</th>
+				{/* Table */}
+				<div className="overflow-x-auto rounded-3xl border border-zinc-200 bg-white shadow-lg">
+					<table className="w-full text-sm md:text-base border-collapse">
+						{/* Header */}
+						<thead>
+							<tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white">
+								<th className="p-4 text-left font-semibold">Participante</th>
+
+								<th className="p-4 text-center font-semibold">Campeão</th>
+
+								<th className="p-4 text-center font-semibold">Vice</th>
+
+								<th className="p-4 text-center font-semibold">Terceiro</th>
+
+								<th className="p-4 text-center font-semibold">Quarto</th>
 							</tr>
 						</thead>
 
-						<tbody>
-							{finalists.map((f) => (
-								<tr key={f.participant_id} className="border-t">
-									<td className="p-3 font-semibold">
-										{f.participantName} {/* 👈 HERE */}
-									</td>
+						{/* Body */}
+						<tbody className="text-zinc-900">
+							{finalists.map((f) => {
+								return (
+									<tr
+										key={f.participant_id}
+										className="border-t border-zinc-200 bg-white hover:bg-zinc-50 transition-colors duration-200"
+									>
+										{/* Participant */}
+										<td className="p-4 font-semibold whitespace-nowrap">
+											{f.participantName}
+										</td>
 
-									<td className="p-3 text-center">{f.champion}</td>
-									<td className="p-3 text-center">{f.vice}</td>
-									<td className="p-3 text-center">{f.third}</td>
-									<td className="p-3 text-center">{f.fourth}</td>
-								</tr>
-							))}
+										{/* Champion */}
+										<td className="p-4 text-center">
+											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
+												{f.champion}
+											</div>
+										</td>
+
+										{/* Vice */}
+										<td className="p-4 text-center">
+											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
+												{f.vice}
+											</div>
+										</td>
+
+										{/* Third */}
+										<td className="p-4 text-center">
+											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
+												{f.third}
+											</div>
+										</td>
+
+										{/* Fourth */}
+										<td className="p-4 text-center">
+											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
+												{f.fourth}
+											</div>
+										</td>
+									</tr>
+								);
+							})}
 						</tbody>
 					</table>
 				</div>
