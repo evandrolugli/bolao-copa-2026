@@ -6,15 +6,12 @@ import type { MatchWithPredictions } from "../lib/utils/types";
 
 function sortPredictions(predictions: any[]) {
 	return [...predictions].sort((a, b) => {
-		// points first (descending)
 		if (b.points !== a.points) return b.points - a.points;
 
-		// then alphabetical by name
 		return a.participant.name.localeCompare(b.participant.name);
 	});
 }
 
-// helper: badge style based on prediction result
 function getBadgeClass(status: string) {
 	switch (status) {
 		case PREDICTION_STATUS.EXACT:
@@ -31,7 +28,6 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 
 	const isPublished = isMatchPublished(match);
 
-	// helper: render match score
 	function renderScore() {
 		if (!isPublished) {
 			return <p className="text-xs text-zinc-400">Pendente</p>;
@@ -49,11 +45,11 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 	}
 
 	return (
-		<div className="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+		<div className="bg-zinc-50 border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
 			{/* HEADER */}
 			<button
 				onClick={() => setOpen((prev) => !prev)}
-				className="w-full flex justify-between items-center p-4 bg-zinc-900 text-white"
+				className="w-full flex justify-between items-center p-4 bg-zinc-900 text-white active:bg-zinc-800 transition"
 			>
 				<div className="text-left">
 					<p className="text-xs text-zinc-300">{match.group}</p>
@@ -70,7 +66,7 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 
 			{/* BODY */}
 			{open && (
-				<div className="p-3 space-y-2">
+				<div className="p-3 space-y-2 bg-zinc-100/40">
 					{sortPredictions(match.predictions).map((p) => {
 						const canShowPoints =
 							isPublished && p.status !== PREDICTION_STATUS.PENDING;
@@ -78,7 +74,7 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 						return (
 							<div
 								key={`${p.participant_id}-${p.match_id}`}
-								className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-50"
+								className="flex items-center justify-between p-2 rounded-lg active:bg-zinc-100 md:hover:bg-zinc-50 transition"
 							>
 								{/* name */}
 								<span className="font-medium">{p.participant.name}</span>
