@@ -29,11 +29,11 @@ export default function MatchCard({ match }: { match: MatchWithPredictions }) {
 
 	function renderScore() {
 		if (!isPublished || match.home_score == null || match.away_score == null) {
-			return <p className="text-xs text-zinc-400">Pendente</p>;
+			return <p className="text-xs text-zinc-200">Pendente</p>;
 		}
 
 		return (
-			<p className="font-bold text-zinc-900">
+			<p className="font-bold text-zinc-200">
 				{match.home_score} x {match.away_score}
 			</p>
 		);
