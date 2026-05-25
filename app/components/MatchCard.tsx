@@ -69,7 +69,12 @@ export default function MatchCard({
 
 	// ✅ build map safely inside component
 	const leaderboardMap = useMemo(() => {
-		return new Map((leaderboard ?? []).map((p) => [p.id, p.position]));
+		return new Map(
+			(leaderboard ?? []).map((p) => [
+				p.id,
+				p.position ?? 9999, // 🔥 normalize null here
+			]),
+		);
 	}, [leaderboard]);
 
 	function renderScore() {
