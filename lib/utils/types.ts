@@ -1,7 +1,17 @@
+// =============================
+// PARTICIPANTS
+// =============================
+
 export type Participant = {
 	id: number;
 	name: string;
 };
+
+// =============================
+// MATCHES
+// =============================
+
+export type MatchStatus = "pending" | "published";
 
 export type Match = {
 	id: number;
@@ -14,8 +24,18 @@ export type Match = {
 	away_score: number | null;
 	is_brazil: boolean;
 	day: number;
-	status: string;
+	status: MatchStatus;
 };
+
+export type MatchStats = {
+	exact: number;
+	correct: number;
+	wrong: number;
+};
+
+// =============================
+// PREDICTIONS
+// =============================
 
 export type Prediction = {
 	participant_id: number;
@@ -23,6 +43,21 @@ export type Prediction = {
 	pred_home: number;
 	pred_away: number;
 };
+
+export type PredictionStatus = "exact" | "correct" | "wrong" | "pending";
+
+export type PredictionWithParticipant = Prediction & {
+	participant: Participant;
+};
+
+export type ScoredPrediction = PredictionWithParticipant & {
+	points: number;
+	status: PredictionStatus;
+};
+
+// =============================
+// FINALISTS
+// =============================
 
 export type FinalistsPrediction = {
 	participant_id: number;
@@ -38,26 +73,14 @@ export type Finalists = Record<
 	string
 >;
 
-export type PredictionStatus = "exact" | "correct" | "wrong" | "pending";
-
-export type ScoredPrediction = PredictionWithParticipant & {
-	points: number;
-	status: PredictionStatus;
-};
-
-export type PredictionWithParticipant = Prediction & {
-	participant: Participant;
-};
-
-export type MatchStats = {
-	exact: number;
-	correct: number;
-	wrong: number;
-};
+// =============================
+// LEADERBOARD / ENRICHED TYPES
+// =============================
 
 export type MatchWithPredictions = Match & {
 	predictions: ScoredPrediction[];
 	stats: MatchStats;
+
 	leaderboard?: {
 		id: number;
 		position: number;

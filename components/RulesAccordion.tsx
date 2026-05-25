@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function RulesAccordion() {
-	const [open, setOpen] = useState<number | null>(1);
+	const [open, setOpen] = useState<number | null>();
 
 	function toggle(section: number) {
 		setOpen(open === section ? null : section);

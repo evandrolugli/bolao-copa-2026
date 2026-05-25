@@ -1,4 +1,4 @@
-import RulesAccordion from "./components/RulesAccordion";
+import RulesAccordion from "@/components/RulesAccordion";
 
 export default function Home() {
 	return (

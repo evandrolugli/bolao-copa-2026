@@ -1,6 +1,6 @@
 "use client";
 
-import RulesAccordion from "@/app/components/RulesAccordion";
+import RulesAccordion from "@/components/RulesAccordion";
 
 export default function RulesPage() {
 	return (

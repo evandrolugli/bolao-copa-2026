@@ -1,4 +1,4 @@
-import MatchCard from "@/app/components/MatchCard";
+import MatchCard from "@/components/MatchCard";
 import { getLeaderboard } from "@/lib/services/leaderboardService";
 import { getPredictionsByMatch } from "@/lib/services/predictionService";
 import { getMatchCardVariant } from "@/lib/utils/getMatchCardVariant";
