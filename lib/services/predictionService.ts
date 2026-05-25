@@ -16,6 +16,20 @@ export async function getPredictionsByMatch(): Promise<MatchWithPredictions[]> {
 	]);
 
 	const typedMatches = matches as Match[];
+	// const typedMatches: Match[] = matches.map((m: any) => ({
+	// 	id: Number(m.id),
+	// 	phase: m.phase,
+	// 	round: m.round,
+	// 	group: m.group,
+	// 	home: m.home,
+	// 	away: m.away,
+	// 	home_score: m.home_score ? Number(m.home_score) : null,
+	// 	away_score: m.away_score ? Number(m.away_score) : null,
+	// 	is_brazil: m.is_brazil === "TRUE",
+	// 	day: Number(m.day),
+	// 	status: m.status === "publicar" ? "published" : "pending",
+	// }));
+
 	const typedParticipants = participants as Participant[];
 	const typedPredictions = predictions as Prediction[];
 
@@ -39,13 +53,6 @@ export async function getPredictionsByMatch(): Promise<MatchWithPredictions[]> {
 		predictionsByMatch.get(pred.match_id)!.push(enriched);
 	}
 
-	// merge matches + scored predictions
-	// return typedMatches.map((match) => ({
-	// 	...match,
-	// 	predictions: (predictionsByMatch.get(match.id) || []).map((p) =>
-	// 		scorePrediction(p, match),
-	// 	),
-	// }));
 	return typedMatches.map((match) => {
 		const predictions = (predictionsByMatch.get(match.id) || []).map((p) =>
 			scorePrediction(p, match),
