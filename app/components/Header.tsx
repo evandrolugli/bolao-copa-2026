@@ -10,6 +10,7 @@ export default function Header() {
 				<Link href="/leaderboard">Classificação</Link>
 				<Link href="/predictions">Palpites</Link>
 				<Link href="/finalists">Finalistas</Link>
+				<Link href="/rules">Regulamento</Link>
 			</div>
 		</header>
 	);
