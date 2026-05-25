@@ -49,6 +49,13 @@ export type PredictionWithParticipant = Prediction & {
 	participant: Participant;
 };
 
+export type MatchStats = {
+	exact: number;
+	correct: number;
+	wrong: number;
+};
+
 export type MatchWithPredictions = Match & {
 	predictions: ScoredPrediction[];
+	stats: MatchStats;
 };
