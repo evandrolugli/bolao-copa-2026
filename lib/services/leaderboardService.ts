@@ -1,7 +1,7 @@
-import { fetchSheet } from "../googleSheets/fetchSheet";
-import { SHEETS } from "../googleSheets/sheetsConfig";
-import { calculateLeaderboard } from "../utils/calculateLeaderboard";
-import { isMatchPublished } from "../utils/constants";
+import { fetchSheet } from "@/lib/googleSheets/fetchSheet";
+import { SHEETS } from "@/lib/googleSheets/sheetsConfig";
+import { calculateLeaderboard } from "@/lib/utils/calculateLeaderboard";
+import { isMatchPublished } from "@/lib/utils/constants";
 import type {
 	Finalists,
 	FinalistsPrediction,

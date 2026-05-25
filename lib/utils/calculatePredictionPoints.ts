@@ -1,6 +1,6 @@
-import { isMatchPublished, POINTS } from "./constants";
-import { calculateFinalistsPoints } from "./finalistsPoints";
-import type { Match, Prediction } from "./types";
+import { isMatchPublished, POINTS } from "@/lib/utils/constants";
+import { calculateFinalistsPoints } from "@/lib/utils/finalistsPoints";
+import type { Match, Prediction } from "@/lib/utils/types";
 
 function calculatePoints(match: Match, prediction: Prediction) {
 	// check if exact score prediction

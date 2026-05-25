@@ -1,9 +1,9 @@
+import { isMatchPublished, POINTS } from "@/lib/utils/constants";
 import type {
 	Match,
 	PredictionWithParticipant,
 	ScoredPrediction,
-} from "../utils/types";
-import { isMatchPublished, POINTS } from "./constants";
+} from "@/lib/utils/types";
 
 function getOutcome(home: number, away: number) {
 	if (home > away) return "HOME";

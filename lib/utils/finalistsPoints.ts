@@ -1,5 +1,5 @@
-import { FINALISTS_POINTS } from "./constants";
-import { Finalists, FinalistsPrediction } from "./types";
+import { FINALISTS_POINTS } from "@/lib/utils/constants";
+import { Finalists, FinalistsPrediction } from "@/lib/utils/types";
 
 export function calculateFinalistsPoints(
 	pred: FinalistsPrediction,

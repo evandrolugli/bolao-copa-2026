@@ -1,5 +1,5 @@
-import { fetchSheet } from "../googleSheets/fetchSheet";
-import { SHEETS } from "../googleSheets/sheetsConfig";
+import { fetchSheet } from "@/lib/googleSheets/fetchSheet";
+import { SHEETS } from "@/lib/googleSheets/sheetsConfig";
 import type { FinalistsPrediction, Participant } from "../utils/types";
 
 export async function getFinalistsPredictions(): Promise<

@@ -1,6 +1,6 @@
-import { calculatePredictionPoints } from "./calculatePredictionPoints";
-import { isMatchPublished } from "./constants";
-import { rankLeaderboard } from "./rankLeaderboard";
+import { calculatePredictionPoints } from "@/lib/utils/calculatePredictionPoints";
+import { isMatchPublished } from "@/lib/utils/constants";
+import { rankLeaderboard } from "@/lib/utils/rankLeaderboard";
 
 export function buildPreviousLeaderboard({
 	leaderboard,

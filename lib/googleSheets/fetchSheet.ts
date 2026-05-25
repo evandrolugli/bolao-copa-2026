@@ -1,4 +1,4 @@
-import { SHEET_ID } from "./sheetsConfig";
+import { SHEET_ID } from "@/lib/googleSheets/sheetsConfig";
 
 // fetch and convert google sheet into typed array
 export async function fetchSheet<T>(sheetName: string): Promise<T[]> {

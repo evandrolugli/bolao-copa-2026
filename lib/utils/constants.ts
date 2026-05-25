@@ -1,4 +1,4 @@
-import type { Match } from "./types";
+import type { Match } from "@/lib/utils/types";
 
 export const POINTS = {
 	exactHits: 5,

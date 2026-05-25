@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { isMatchPublished, PREDICTION_STATUS } from "../../lib/utils/constants";
-import type { MatchWithPredictions } from "../../lib/utils/types";
+import { isMatchPublished, PREDICTION_STATUS } from "@/lib/utils/constants";
+import type { MatchWithPredictions } from "@/lib/utils/types";
 
 type Props = {
 	match: MatchWithPredictions;

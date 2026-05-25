@@ -1,7 +1,7 @@
-import { buildLeaderboard } from "./buildLeaderboard";
-import { buildPreviousLeaderboard } from "./buildPreviousLeaderboard";
-import { calculatePredictionPoints } from "./calculatePredictionPoints";
-import { rankLeaderboard } from "./rankLeaderboard";
+import { buildLeaderboard } from "@/lib/utils/buildLeaderboard";
+import { buildPreviousLeaderboard } from "@/lib/utils/buildPreviousLeaderboard";
+import { calculatePredictionPoints } from "@/lib/utils/calculatePredictionPoints";
+import { rankLeaderboard } from "@/lib/utils/rankLeaderboard";
 
 export function calculateLeaderboard({
 	participants,

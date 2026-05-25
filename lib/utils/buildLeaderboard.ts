@@ -1,5 +1,5 @@
-import { isMatchPublished } from "../utils/constants";
-import type { Match, Participant } from "../utils/types";
+import { isMatchPublished } from "@/lib/utils/constants";
+import type { Match, Participant } from "@/lib/utils/types";
 
 type BuildLeaderboardParams = {
 	participants: Participant[];

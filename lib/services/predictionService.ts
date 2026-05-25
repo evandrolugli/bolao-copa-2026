@@ -1,5 +1,5 @@
-import { fetchSheet } from "../googleSheets/fetchSheet";
-import { scorePrediction } from "../utils/scorePrediction";
+import { fetchSheet } from "@/lib/googleSheets/fetchSheet";
+import { scorePrediction } from "@/lib/utils/scorePrediction";
 import type {
 	Match,
 	MatchWithPredictions,
