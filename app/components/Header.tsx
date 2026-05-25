@@ -4,13 +4,10 @@ export default function Header() {
 	return (
 		<header className="p-4 border-b border-zinc-800 mb-6">
 			<div className="flex gap-4">
-				<Link href="/" className="font-bold">
-					Bolão
-				</Link>
+				<Link href="/">Bolão</Link>
 				<Link href="/leaderboard">Classificação</Link>
 				<Link href="/predictions">Palpites</Link>
 				<Link href="/finalists">Finalistas</Link>
-				<Link href="/rules">Regulamento</Link>
 			</div>
 		</header>
 	);
