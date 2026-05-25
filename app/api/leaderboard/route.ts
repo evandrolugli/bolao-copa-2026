@@ -1,4 +1,4 @@
-import { getLeaderboard } from "../../../lib/services/leaderboardService";
+import { getLeaderboard } from "@/lib/services/leaderboardService";
 
 export async function GET() {
 	try {
