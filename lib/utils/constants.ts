@@ -6,7 +6,7 @@ export const POINTS = {
 	wrong: 0,
 } as const;
 
-export const FINALISTS_POINTS = {
+export const FINAL_STANDINGS_POINTS = {
 	champion: 10,
 	vice: 5,
 	third: 3,

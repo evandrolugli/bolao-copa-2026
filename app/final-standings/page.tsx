@@ -1,23 +1,23 @@
-import { getFinalistsPredictionsWithNames } from "@/lib/services/finalistsService";
+import { getFinalStandingsPredictionsWithNames } from "@/lib/services/finalStandingsService";
 import { getLeaderboard } from "@/lib/services/leaderboardService";
 
 export const dynamic = "force-dynamic";
 
-export default async function FinalistsPage() {
-	// ✅ STEP 1 — FETCH BOTH DATASETS
-	const [finalists, leaderboardData] = await Promise.all([
-		getFinalistsPredictionsWithNames(),
+export default async function FinalStandingsPage() {
+	// STEP 1 — FETCH BOTH DATASETS
+	const [finalStandings, leaderboardData] = await Promise.all([
+		getFinalStandingsPredictionsWithNames(),
 		getLeaderboard(),
 	]);
 
-	// ❗ IMPORTANT: leaderboardData is an object { leaderboard, day, matchesCount }
+	// leaderboardData is an object { leaderboard, day, matchesCount }
 	const leaderboard = leaderboardData.leaderboard;
 
-	// ✅ STEP 2 — CREATE RANK MAP
+	// STEP 2 — CREATE RANK MAP
 	const leaderboardMap = new Map(leaderboard.map((p) => [p.id, p.position]));
 
-	// ✅ STEP 3 — SORT FINALISTS BY LEADERBOARD POSITION
-	const sortedFinalists = [...finalists].sort((a, b) => {
+	// STEP 3 — SORT FINAL STANDINGS BY LEADERBOARD POSITION
+	const sortedFinalStandings = [...finalStandings].sort((a, b) => {
 		const posA = leaderboardMap.get(a.participant_id) ?? 9999;
 		const posB = leaderboardMap.get(b.participant_id) ?? 9999;
 
@@ -32,7 +32,7 @@ export default async function FinalistsPage() {
 				{/* Header */}
 				<div className="mb-8">
 					<h1 className="text-4xl font-bold tracking-tight text-zinc-900">
-						Finalistas
+						Top 4
 					</h1>
 				</div>
 
@@ -50,7 +50,7 @@ export default async function FinalistsPage() {
 						</thead>
 
 						<tbody className="text-zinc-900">
-							{sortedFinalists.map((f) => (
+							{sortedFinalStandings.map((f) => (
 								<tr
 									key={f.participant_id}
 									className="border-t border-zinc-200 bg-white hover:bg-zinc-50 transition-colors duration-200"

@@ -4,6 +4,6 @@ export const SHEETS = {
 	PARTICIPANTS: "Participants",
 	MATCHES: "Matches",
 	PREDICTIONS: "Predictions",
-	FINALISTS: "Finals_Rank",
-	FINALISTS_PREDICTIONS: "Finals_Rank_Predictions",
+	FINAL_STANDINGS: "Final_Standings",
+	FINAL_STANDINGS_PREDICTIONS: "Final_Standings_Predictions",
 };

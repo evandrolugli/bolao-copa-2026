@@ -3,20 +3,20 @@ import { SHEETS } from "@/lib/googleSheets/sheetsConfig";
 import { calculateLeaderboard } from "@/lib/utils/calculateLeaderboard";
 import { isMatchPublished } from "@/lib/utils/constants";
 import type {
-	Finalists,
-	FinalistsPrediction,
+	FinalStandings,
+	FinalStandingsPrediction,
 	Match,
 	Participant,
 	Prediction,
-} from "../utils/types";
+} from "@/lib/utils/types";
 
-type FinalistsRow = {
+type FinalStandingsRow = {
 	col_0?: string;
 	col_1?: string;
 };
 
-function parseFinalists(rows: FinalistsRow[]): Finalists {
-	const result: Finalists = {
+function parseFinalStandings(rows: FinalStandingsRow[]): FinalStandings {
+	const result: FinalStandings = {
 		champion: "",
 		vice: "",
 		third: "",
@@ -33,7 +33,7 @@ function parseFinalists(rows: FinalistsRow[]): Finalists {
 		if (!key || !value) continue;
 
 		if (key in result) {
-			result[key as keyof Finalists] = value;
+			result[key as keyof FinalStandings] = value;
 		}
 	}
 
@@ -45,24 +45,24 @@ export async function getLeaderboard() {
 		participants,
 		matches,
 		predictions,
-		finalistsPredictions,
-		finalistsRows,
+		finalStandingsPredictions,
+		finalStandingsRows,
 	] = await Promise.all([
 		fetchSheet<Participant>(SHEETS.PARTICIPANTS),
 		fetchSheet<Match>(SHEETS.MATCHES),
 		fetchSheet<Prediction>(SHEETS.PREDICTIONS),
-		fetchSheet<FinalistsPrediction>(SHEETS.FINALISTS_PREDICTIONS),
-		fetchSheet<FinalistsRow>(SHEETS.FINALISTS),
+		fetchSheet<FinalStandingsPrediction>(SHEETS.FINAL_STANDINGS_PREDICTIONS),
+		fetchSheet<FinalStandingsRow>(SHEETS.FINAL_STANDINGS),
 	]);
 
-	const finalistsResult = parseFinalists(finalistsRows);
+	const finalStandings = parseFinalStandings(finalStandingsRows);
 
 	const { leaderboard, effectiveDay } = calculateLeaderboard({
 		participants,
 		matches,
 		predictions,
-		finalistsPredictions,
-		finalistsResult,
+		finalStandingsPredictions,
+		finalStandings,
 	});
 
 	const matchesCount = matches.filter(isMatchPublished).length;

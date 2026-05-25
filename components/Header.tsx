@@ -7,7 +7,7 @@ export default function Header() {
 				<Link href="/">Bolão</Link>
 				<Link href="/leaderboard">Classificação</Link>
 				<Link href="/predictions">Palpites</Link>
-				<Link href="/finalists">Finalistas</Link>
+				<Link href="/final-standings">Top 4</Link>
 			</div>
 		</header>
 	);

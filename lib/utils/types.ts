@@ -56,10 +56,10 @@ export type ScoredPrediction = PredictionWithParticipant & {
 };
 
 // =============================
-// FINALISTS
+// FINAL STANDINGS
 // =============================
 
-export type FinalistsPrediction = {
+export type FinalStandingsPrediction = {
 	participant_id: number;
 	champion: string;
 	vice: string;
@@ -68,7 +68,7 @@ export type FinalistsPrediction = {
 	participantName?: string;
 };
 
-export type Finalists = Record<
+export type FinalStandings = Record<
 	"champion" | "vice" | "third" | "fourth",
 	string
 >;
