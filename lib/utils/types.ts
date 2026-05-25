@@ -11,7 +11,7 @@ export type Participant = {
 // MATCHES
 // =============================
 
-export type MatchStatus = "pending" | "published";
+export type MatchStatus = "pending" | "publicar";
 
 export type Match = {
 	id: number;
