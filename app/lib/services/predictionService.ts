@@ -40,10 +40,31 @@ export async function getPredictionsByMatch(): Promise<MatchWithPredictions[]> {
 	}
 
 	// merge matches + scored predictions
-	return typedMatches.map((match) => ({
-		...match,
-		predictions: (predictionsByMatch.get(match.id) || []).map((p) =>
+	// return typedMatches.map((match) => ({
+	// 	...match,
+	// 	predictions: (predictionsByMatch.get(match.id) || []).map((p) =>
+	// 		scorePrediction(p, match),
+	// 	),
+	// }));
+	return typedMatches.map((match) => {
+		const predictions = (predictionsByMatch.get(match.id) || []).map((p) =>
 			scorePrediction(p, match),
-		),
-	}));
+		);
+
+		const stats = predictions.reduce(
+			(acc, p) => {
+				if (p.status === "exact") acc.exact++;
+				else if (p.status === "correct") acc.correct++;
+				else acc.wrong++;
+				return acc;
+			},
+			{ exact: 0, correct: 0, wrong: 0 },
+		);
+
+		return {
+			...match,
+			predictions,
+			stats,
+		};
+	});
 }

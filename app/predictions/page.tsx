@@ -1,5 +1,6 @@
 import MatchCard from "../components/MatchCard";
 import { getPredictionsByMatch } from "../lib/services/predictionService";
+import { getMatchCardVariant } from "../lib/utils/getMatchCardVariant";
 
 export const dynamic = "force-dynamic";
 
@@ -33,13 +34,9 @@ export default async function PredictionsPage({
 	// filtered matches
 	const filteredMatches = matches.filter((m) => {
 		const phaseMatch = selectedPhase ? m.phase === selectedPhase : true;
-
 		const roundMatch = round ? m.round === round : true;
-
 		return phaseMatch && roundMatch;
 	});
-
-	let currentGroup = "";
 
 	return (
 		<main className="min-h-screen bg-zinc-100 p-6">
@@ -96,25 +93,15 @@ export default async function PredictionsPage({
 				{/* Matches */}
 				<div className="space-y-4">
 					{filteredMatches.map((match) => {
-						const showGroup =
-							selectedPhase === "Primeira Fase" && match.group !== currentGroup;
-
-						if (showGroup) {
-							currentGroup = match.group;
-						}
+						const variant = getMatchCardVariant(match);
 
 						return (
-							<div key={match.id}>
-								{/* Group Subtitle
-								{showGroup && (
-									<div className="pt-4">
-										<h2 className="text-xl font-bold text-zinc-700">
-											{match.group}
-										</h2>
-									</div>
-								)} */}
-								<MatchCard match={match} />
-							</div>
+							<MatchCard
+								key={match.id}
+								match={match}
+								stats={match.stats}
+								variant={variant}
+							/>
 						);
 					})}
 				</div>
