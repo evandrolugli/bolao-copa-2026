@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { getLeaderboard } from "../lib/services/leaderboardService";
+import { getLeaderboard } from "../../lib/services/leaderboardService";
 
 type LeaderboardEntry = {
 	id: number;

@@ -1,5 +1,5 @@
-import { getFinalistsPredictionsWithNames } from "../lib/services/finalistsService";
-import { getLeaderboard } from "../lib/services/leaderboardService";
+import { getFinalistsPredictionsWithNames } from "../../lib/services/finalistsService";
+import { getLeaderboard } from "../../lib/services/leaderboardService";
 
 export const dynamic = "force-dynamic";
 

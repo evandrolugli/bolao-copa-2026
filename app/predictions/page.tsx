@@ -1,7 +1,7 @@
+import { getLeaderboard } from "../../lib/services/leaderboardService";
+import { getPredictionsByMatch } from "../../lib/services/predictionService";
+import { getMatchCardVariant } from "../../lib/utils/getMatchCardVariant";
 import MatchCard from "../components/MatchCard";
-import { getLeaderboard } from "../lib/services/leaderboardService";
-import { getPredictionsByMatch } from "../lib/services/predictionService";
-import { getMatchCardVariant } from "../lib/utils/getMatchCardVariant";
 
 export const dynamic = "force-dynamic";
 
