@@ -1,6 +1,6 @@
 import MatchCard from "@/components/MatchCard";
 import { getLeaderboard } from "@/lib/services/leaderboardService";
-import { getPredictionsByMatch } from "@/lib/services/predictionService";
+import { getMatchesWithPredictions } from "@/lib/services/matchService";
 import { getMatchCardVariant } from "@/lib/utils/getMatchCardVariant";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export default async function PredictionsPage({
 	const { phase, round } = await searchParams;
 
 	const [matches, leaderboardData] = await Promise.all([
-		getPredictionsByMatch(),
+		getMatchesWithPredictions(),
 		getLeaderboard(),
 	]);
 
