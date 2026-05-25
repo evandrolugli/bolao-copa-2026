@@ -14,7 +14,7 @@ type Props = {
 	variant?: "published" | "pending";
 	leaderboard?: {
 		id: number;
-		position: number;
+		position: number | null;
 		points: number;
 		name: string;
 	}[];
