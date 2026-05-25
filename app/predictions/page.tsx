@@ -1,4 +1,5 @@
 import MatchCard from "../components/MatchCard";
+import { getLeaderboard } from "../lib/services/leaderboardService";
 import { getPredictionsByMatch } from "../lib/services/predictionService";
 import { getMatchCardVariant } from "../lib/utils/getMatchCardVariant";
 
@@ -16,7 +17,12 @@ export default async function PredictionsPage({
 }: PredictionsPageProps) {
 	const { phase, round } = await searchParams;
 
-	const matches = await getPredictionsByMatch();
+	const [matches, leaderboardData] = await Promise.all([
+		getPredictionsByMatch(),
+		getLeaderboard(),
+	]);
+
+	const leaderboard = leaderboardData.leaderboard;
 
 	// unique phases
 	const phases = [...new Set(matches.map((m) => m.phase))];
@@ -101,6 +107,7 @@ export default async function PredictionsPage({
 								match={match}
 								stats={match.stats}
 								variant={variant}
+								leaderboard={leaderboard}
 							/>
 						);
 					})}

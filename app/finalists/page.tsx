@@ -1,9 +1,30 @@
 import { getFinalistsPredictionsWithNames } from "../lib/services/finalistsService";
+import { getLeaderboard } from "../lib/services/leaderboardService";
 
 export const dynamic = "force-dynamic";
 
 export default async function FinalistsPage() {
-	const finalists = await getFinalistsPredictionsWithNames();
+	// ✅ STEP 1 — FETCH BOTH DATASETS
+	const [finalists, leaderboardData] = await Promise.all([
+		getFinalistsPredictionsWithNames(),
+		getLeaderboard(),
+	]);
+
+	// ❗ IMPORTANT: leaderboardData is an object { leaderboard, day, matchesCount }
+	const leaderboard = leaderboardData.leaderboard;
+
+	// ✅ STEP 2 — CREATE RANK MAP
+	const leaderboardMap = new Map(leaderboard.map((p) => [p.id, p.position]));
+
+	// ✅ STEP 3 — SORT FINALISTS BY LEADERBOARD POSITION
+	const sortedFinalists = [...finalists].sort((a, b) => {
+		const posA = leaderboardMap.get(a.participant_id) ?? 9999;
+		const posB = leaderboardMap.get(b.participant_id) ?? 9999;
+
+		if (posA !== posB) return posA - posB;
+
+		return a.participantName.localeCompare(b.participantName);
+	});
 
 	return (
 		<main className="min-h-screen bg-zinc-100 text-zinc-900 p-6">
@@ -18,64 +39,33 @@ export default async function FinalistsPage() {
 				{/* Table */}
 				<div className="overflow-x-auto rounded-3xl border border-zinc-200 bg-white shadow-lg">
 					<table className="w-full text-sm md:text-base border-collapse">
-						{/* Header */}
 						<thead>
 							<tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white">
 								<th className="p-4 text-left font-semibold">Participante</th>
-
 								<th className="p-4 text-center font-semibold">Campeão</th>
-
 								<th className="p-4 text-center font-semibold">Vice</th>
-
 								<th className="p-4 text-center font-semibold">Terceiro</th>
-
 								<th className="p-4 text-center font-semibold">Quarto</th>
 							</tr>
 						</thead>
 
-						{/* Body */}
 						<tbody className="text-zinc-900">
-							{finalists.map((f) => {
-								return (
-									<tr
-										key={f.participant_id}
-										className="border-t border-zinc-200 bg-white hover:bg-zinc-50 transition-colors duration-200"
-									>
-										{/* Participant */}
-										<td className="p-4 font-semibold whitespace-nowrap">
-											{f.participantName}
-										</td>
+							{sortedFinalists.map((f) => (
+								<tr
+									key={f.participant_id}
+									className="border-t border-zinc-200 bg-white hover:bg-zinc-50 transition-colors duration-200"
+								>
+									{/* Participant */}
+									<td className="p-4 font-semibold whitespace-nowrap">
+										{f.participantName}
+									</td>
 
-										{/* Champion */}
-										<td className="p-4 text-center">
-											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
-												{f.champion}
-											</div>
-										</td>
-
-										{/* Vice */}
-										<td className="p-4 text-center">
-											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
-												{f.vice}
-											</div>
-										</td>
-
-										{/* Third */}
-										<td className="p-4 text-center">
-											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
-												{f.third}
-											</div>
-										</td>
-
-										{/* Fourth */}
-										<td className="p-4 text-center">
-											<div className="inline-flex items-center justify-center min-w-[90px] h-9 px-3 rounded-lg text-zinc-700">
-												{f.fourth}
-											</div>
-										</td>
-									</tr>
-								);
-							})}
+									<td className="p-4 text-center">{f.champion}</td>
+									<td className="p-4 text-center">{f.vice}</td>
+									<td className="p-4 text-center">{f.third}</td>
+									<td className="p-4 text-center">{f.fourth}</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>

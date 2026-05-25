@@ -58,4 +58,8 @@ export type MatchStats = {
 export type MatchWithPredictions = Match & {
 	predictions: ScoredPrediction[];
 	stats: MatchStats;
+	leaderboard?: {
+		id: number;
+		position: number;
+	}[];
 };
