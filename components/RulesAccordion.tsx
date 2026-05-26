@@ -13,25 +13,23 @@ export default function RulesAccordion() {
 		<main className="page-container">
 			{/* Header */}
 			<div className="mb-10">
-				<h1 className="text-4xl font-bold tracking-tight">Regulamento</h1>
+				<h1 className="page-title">Regulamento</h1>
 				<p className="text-zinc-500 mt-2">Bolão da Copa do Mundo 2026</p>
 			</div>
 
 			<div className="space-y-5">
 				{/* INSCRIÇÕES */}
-				<div className="bg-white border border-zinc-200 rounded-3xl overflow-hidden">
+				<div className="surface overflow-hidden">
 					<button
 						onClick={() => toggle(1)}
 						className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-zinc-50 transition"
 					>
 						<span className="font-semibold text-lg">Inscrições</span>
-						<span className="text-zinc-400 text-xl">
-							{open === 1 ? "−" : "+"}
-						</span>
+						<span className="text-muted text-xl">{open === 1 ? "−" : "+"}</span>
 					</button>
 
 					{open === 1 && (
-						<div className="px-6 pb-6 text-sm text-zinc-700 space-y-4">
+						<div className="px-6 pb-6 text-sm text-foreground/80 space-y-4">
 							<div>
 								<p className="font-semibold text-zinc-800">Pagamento</p>
 								<p>Taxa única de R$ 100 até 07/06/2026</p>
@@ -72,15 +70,13 @@ export default function RulesAccordion() {
 				</div>
 
 				{/* PONTUAÇÃO */}
-				<div className="bg-white border border-zinc-200 rounded-3xl overflow-hidden">
+				<div className="surface overflow-hidden">
 					<button
 						onClick={() => toggle(2)}
 						className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-zinc-50 transition"
 					>
 						<span className="font-semibold text-lg">Pontuação</span>
-						<span className="text-zinc-400 text-xl">
-							{open === 2 ? "−" : "+"}
-						</span>
+						<span className="text-muted text-xl">{open === 2 ? "−" : "+"}</span>
 					</button>
 
 					{open === 2 && (
@@ -158,16 +154,13 @@ export default function RulesAccordion() {
 				</div>
 
 				{/* PREMIAÇÃO */}
-				{/* PREMIAÇÃO */}
-				<div className="bg-white border border-zinc-200 rounded-3xl overflow-hidden">
+				<div className="surface overflow-hidden">
 					<button
 						onClick={() => toggle(3)}
-						className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-zinc-50 transition"
+						className="w-full flex items-center justify-between px-6 py-5 text-left surface-hover transition"
 					>
 						<span className="font-semibold text-lg">Premiação</span>
-						<span className="text-zinc-400 text-xl">
-							{open === 3 ? "−" : "+"}
-						</span>
+						<span className="text-muted text-xl">{open === 3 ? "−" : "+"}</span>
 					</button>
 
 					{open === 3 && (
@@ -262,7 +255,7 @@ export default function RulesAccordion() {
 												R$ 250
 											</td>
 											<td className="p-3">
-												Maior pontuação das oitavas até a final
+												Maior pontuação da segunda fase (mata-mata)
 											</td>
 										</tr>
 

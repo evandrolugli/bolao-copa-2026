@@ -45,7 +45,7 @@ export default async function PredictionsPage({
 	});
 
 	return (
-		<main className="page-container space-y-6">
+		<main className="page-container space-y-4">
 			<h1 className="page-title">Palpites</h1>
 
 			{/* Main Phase Filters */}
@@ -96,7 +96,7 @@ export default async function PredictionsPage({
 			</div>
 
 			{/* Matches */}
-			<div className="space-y-4">
+			<div className="space-y-2">
 				{filteredMatches.map((match) => {
 					const variant = getMatchCardVariant(match);
 

@@ -35,9 +35,9 @@ export default async function FinalStandingsPage() {
 
 			{/* Table */}
 			<div className="table-wrapper">
-				<table className="w-full text-sm md:text-base border-collapse">
-					<thead>
-						<tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white">
+				<table className="table">
+					<thead className="table-header">
+						<tr className="table-row">
 							<th className="p-4 text-left font-semibold">Participante</th>
 							<th className="p-4 text-center font-semibold">Campeão</th>
 							<th className="p-4 text-center font-semibold">Vice</th>
@@ -57,10 +57,10 @@ export default async function FinalStandingsPage() {
 									{f.participantName}
 								</td>
 
-								<td className="p-4 text-center">{f.champion}</td>
-								<td className="p-4 text-center">{f.vice}</td>
-								<td className="p-4 text-center">{f.third}</td>
-								<td className="p-4 text-center">{f.fourth}</td>
+								<td className="table-cell">{f.champion}</td>
+								<td className="table-cell">{f.vice}</td>
+								<td className="table-cell">{f.third}</td>
+								<td className="table-cell">{f.fourth}</td>
 							</tr>
 						))}
 					</tbody>

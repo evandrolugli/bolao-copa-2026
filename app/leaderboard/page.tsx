@@ -92,14 +92,14 @@ export default async function LeaderboardPage() {
 
 			{/* Table */}
 			<div className="table-wrapper">
-				<table className="w-full text-sm border-collapse">
+				<table className="table">
 					{/* Header */}
-					<thead>
-						<tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white text-center">
+					<thead className="table-header">
+						<tr>
 							<th className="w-14 p-3 font-semibold">#</th>
 
 							<th className="w-[240px] p-3 text-left font-semibold">
-								Participantes
+								Participante
 							</th>
 
 							<th className="w-16 p-3 bg-emerald-700 text-emerald-100 font-semibold">
@@ -160,15 +160,10 @@ export default async function LeaderboardPage() {
 							return (
 								<tr
 									key={participant.id}
-									className={`
-										border-t border-zinc-200
-										transition-colors duration-200
-										text-center
-										${topThree}
-									`}
+									className={`table-row text-center ${topThree}`}
 								>
 									{/* Position */}
-									<td className="p-3 font-bold text-base text-amber-700">
+									<td className="table-cell font-bold text-base text-amber-700">
 										{showPosition && participant.position !== null
 											? `${participant.position}º`
 											: ""}
@@ -180,7 +175,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Points */}
-									<td className="p-3 bg-emerald-50">
+									<td className="table-cell">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -198,7 +193,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Exact */}
-									<td className="p-3">
+									<td className="table-cell">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -215,17 +210,19 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Correct */}
-									<td className="p-3">
+									<td className="table-cell">
 										<div className="inline-flex items-center justify-center min-w-10 h-8 px-2 rounded-lg">
 											{participant.correctHits}
 										</div>
 									</td>
 
 									{/* Wrong */}
-									<td className="p-3 text-zinc-500">{participant.wrong}</td>
+									<td className="table-cell text-zinc-500">
+										{participant.wrong}
+									</td>
 
 									{/* Brasil */}
-									<td className="p-3 border-l border-zinc-200">
+									<td className="table-cell border-l border-zinc-200">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -242,7 +239,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Δ Points */}
-									<td className="p-3 border-l border-zinc-200">
+									<td className="table-cell border-l border-zinc-200">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -261,7 +258,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Δ Position */}
-									<td className="p-3 text-center border-r border-zinc-200">
+									<td className="table-cell text-center border-r border-zinc-200">
 										<div
 											className={`
 												inline-flex items-center gap-1 font-semibold text-sm
@@ -305,7 +302,7 @@ export default async function LeaderboardPage() {
 										const highlighted = isMax(value, maxValues[key]);
 
 										return (
-											<td key={key} className="p-3">
+											<td key={key} className="table-cell">
 												<div
 													className={`inline-flex items-center justify-center min-w-[42px] h-8 px-2 rounded-lg
 															${highlighted ? "bg-violet-200 text-violet-900 font-bold" : ""}

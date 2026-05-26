@@ -116,9 +116,32 @@ body {
     0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-.table-header-dark {
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table-header {
   background: linear-gradient(to right, #18181b, #27272a);
   color: white;
+}
+
+.table-header th {
+  padding: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.table-row {
+  border-top: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+}
+
+.table-cell {
+  padding: 0.75rem;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* ======================================================
