@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
+/* ======================================================
+   THEME
+====================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base */
+  --background: #f4f4f5;
+  --foreground: #18181b;
+
+  /* Surfaces */
+  --card: #ffffff;
+  --card-foreground: #18181b;
+
+  /* Borders */
+  --border: #e4e4e7;
+
+  /* Primary */
+  --primary: #18181b;
+  --primary-foreground: #ffffff;
+
+  /* Muted */
+  --muted: #71717a;
+
+  /* Status */
+  --success: #15803d;
+  --warning: #ca8a04;
+  --danger: #dc2626;
+  --info: #0369a1;
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
 }
+
+/* ======================================================
+   TAILWIND TOKENS
+====================================================== */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ======================================================
+   BASE
+====================================================== */
+
+html {
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ======================================================
+   REUSABLE LAYOUTS
+====================================================== */
+
+.page-container {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+}
+
+.page-container-sm {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+}
+
+.page-title {
+  font-size: 2.25rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* ======================================================
+   SURFACES
+====================================================== */
+
+.surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.surface-hover {
+  transition: background-color 0.2s ease;
+}
+
+.surface-hover:hover {
+  background: #fafafa;
+}
+
+/* ======================================================
+   TABLES
+====================================================== */
+
+.table-wrapper {
+  overflow-x: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.table-header-dark {
+  background: linear-gradient(to right, #18181b, #27272a);
+  color: white;
+}
+
+/* ======================================================
+   BADGES
+====================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 2.5rem;
+  height: 2rem;
+
+  padding-inline: 0.5rem;
+
+  border-radius: 0.75rem;
+}
+
+.badge-highlight {
+  background: #ddd6fe;
+  color: #4c1d95;
+  font-weight: 700;
 }

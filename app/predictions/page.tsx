@@ -45,73 +45,71 @@ export default async function PredictionsPage({
 	});
 
 	return (
-		<main className="min-h-screen bg-zinc-100 p-6">
-			<div className="max-w-5xl mx-auto space-y-6">
-				<h1 className="text-zinc-900 text-3xl font-bold">Palpites</h1>
+		<main className="page-container space-y-6">
+			<h1 className="text-zinc-900 text-3xl font-bold">Palpites</h1>
 
-				{/* Main Phase Filters */}
-				<div className="flex flex-wrap gap-3">
-					{phases.map((p) => (
-						<a
-							key={p}
-							href={`/predictions?phase=${encodeURIComponent(p)}`}
-							className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${
-								selectedPhase === p
-									? "bg-black text-white"
-									: "bg-white text-zinc-700 border border-zinc-300 hover:border-zinc-500"
-							}`}
-						>
-							{p}
-						</a>
-					))}
-				</div>
-
-				{/* Round Filters */}
-				<div className="flex flex-wrap gap-2">
+			{/* Main Phase Filters */}
+			<div className="flex flex-wrap gap-3">
+				{phases.map((p) => (
 					<a
-						href={`/predictions?phase=${encodeURIComponent(selectedPhase)}`}
+						key={p}
+						href={`/predictions?phase=${encodeURIComponent(p)}`}
+						className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm ${
+							selectedPhase === p
+								? "bg-black text-white"
+								: "bg-white text-zinc-700 border border-zinc-300 hover:border-zinc-500"
+						}`}
+					>
+						{p}
+					</a>
+				))}
+			</div>
+
+			{/* Round Filters */}
+			<div className="flex flex-wrap gap-2">
+				<a
+					href={`/predictions?phase=${encodeURIComponent(selectedPhase)}`}
+					className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
+						!round
+							? "bg-zinc-700 text-white"
+							: "bg-zinc-200 text-zinc-700 hover:bg-zinc-300"
+					}`}
+				>
+					Todas
+				</a>
+
+				{rounds.map((r) => (
+					<a
+						key={r}
+						href={`/predictions?phase=${encodeURIComponent(
+							selectedPhase,
+						)}&round=${encodeURIComponent(r)}`}
 						className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
-							!round
+							round === r
 								? "bg-zinc-700 text-white"
 								: "bg-zinc-200 text-zinc-700 hover:bg-zinc-300"
 						}`}
 					>
-						Todas
+						{r}
 					</a>
+				))}
+			</div>
 
-					{rounds.map((r) => (
-						<a
-							key={r}
-							href={`/predictions?phase=${encodeURIComponent(
-								selectedPhase,
-							)}&round=${encodeURIComponent(r)}`}
-							className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
-								round === r
-									? "bg-zinc-700 text-white"
-									: "bg-zinc-200 text-zinc-700 hover:bg-zinc-300"
-							}`}
-						>
-							{r}
-						</a>
-					))}
-				</div>
+			{/* Matches */}
+			<div className="space-y-4">
+				{filteredMatches.map((match) => {
+					const variant = getMatchCardVariant(match);
 
-				{/* Matches */}
-				<div className="space-y-4">
-					{filteredMatches.map((match) => {
-						const variant = getMatchCardVariant(match);
-
-						return (
-							<MatchCard
-								key={match.id}
-								match={match}
-								stats={match.stats}
-								variant={variant}
-								leaderboard={leaderboard}
-							/>
-						);
-					})}
-				</div>
+					return (
+						<MatchCard
+							key={match.id}
+							match={match}
+							stats={match.stats}
+							variant={variant}
+							leaderboard={leaderboard}
+						/>
+					);
+				})}
 			</div>
 		</main>
 	);
