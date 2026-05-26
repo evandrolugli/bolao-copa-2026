@@ -66,15 +66,13 @@ export default async function LeaderboardPage() {
 				<div className="flex items-end justify-between gap-4 flex-wrap">
 					{/* Left */}
 					<div>
-						<h1 className="text-4xl font-bold tracking-tight text-zinc-900">
-							Classificação
-						</h1>
+						<h1 className="page-title">Classificação</h1>
 					</div>
 
 					{/* Right Info */}
 					<div className="flex items-center gap-3">
 						{/* Matches */}
-						<div className="rounded-2xl border border-zinc-200 bg-white px-5 py-3 shadow-sm text-center min-w-[110px]">
+						<div className="surface px-5 py-3 text-center min-w-[110px]">
 							<p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
 								Jogos
 							</p>
@@ -82,7 +80,7 @@ export default async function LeaderboardPage() {
 						</div>
 
 						{/* Day */}
-						<div className="rounded-2xl border border-zinc-200 bg-white px-5 py-3 shadow-sm text-center min-w-[110px]">
+						<div className="surface px-5 py-3 text-center min-w-[110px]">
 							<p className="text-xs uppercase tracking-wide text-zinc-500 font-medium">
 								Dia
 							</p>
@@ -93,7 +91,7 @@ export default async function LeaderboardPage() {
 			</div>
 
 			{/* Table */}
-			<div className="overflow-x-auto rounded-3xl border border-zinc-200 bg-white shadow-lg">
+			<div className="table-wrapper">
 				<table className="w-full text-sm border-collapse">
 					{/* Header */}
 					<thead>

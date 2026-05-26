@@ -46,7 +46,7 @@ export default async function PredictionsPage({
 
 	return (
 		<main className="page-container space-y-6">
-			<h1 className="text-zinc-900 text-3xl font-bold">Palpites</h1>
+			<h1 className="page-title">Palpites</h1>
 
 			{/* Main Phase Filters */}
 			<div className="flex flex-wrap gap-3">

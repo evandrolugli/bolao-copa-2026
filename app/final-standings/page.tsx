@@ -30,13 +30,11 @@ export default async function FinalStandingsPage() {
 		<main className="page-container">
 			{/* Header */}
 			<div className="mb-8">
-				<h1 className="text-4xl font-bold tracking-tight text-zinc-900">
-					Top 4
-				</h1>
+				<h1 className="page-title">Top 4</h1>
 			</div>
 
 			{/* Table */}
-			<div className="overflow-x-auto rounded-3xl border border-zinc-200 bg-white shadow-lg">
+			<div className="table-wrapper">
 				<table className="w-full text-sm md:text-base border-collapse">
 					<thead>
 						<tr className="bg-gradient-to-r from-zinc-900 to-zinc-800 text-white">
