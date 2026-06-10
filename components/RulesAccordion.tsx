@@ -280,7 +280,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Churrasco</td>
 											<td className="p-3 text-center font-bold text-zinc-700">
-												R$ 1100
+												R$ 1.100
 											</td>
 											<td className="p-3">
 												Contribuição para o evento final entre participantes
