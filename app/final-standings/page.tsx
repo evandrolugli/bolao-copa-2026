@@ -56,7 +56,6 @@ export default async function FinalStandingsPage() {
 								<td className="p-4 font-semibold whitespace-nowrap">
 									{f.participantName}
 								</td>
-
 								<td className="table-cell">{f.champion}</td>
 								<td className="table-cell">{f.vice}</td>
 								<td className="table-cell">{f.third}</td>

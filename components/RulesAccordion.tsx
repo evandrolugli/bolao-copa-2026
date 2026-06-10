@@ -184,7 +184,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">🥇 1º lugar</td>
 											<td className="p-3 text-center font-bold text-emerald-700">
-												R$ 2.000
+												R$ 4.440
 											</td>
 											<td className="p-3">Maior pontuação geral (40%)</td>
 										</tr>
@@ -192,17 +192,17 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">🥈 2º lugar</td>
 											<td className="p-3 text-center font-bold text-zinc-700">
-												R$ 700
+												R$ 1.650
 											</td>
 											<td className="p-3">
-												Segundo maior pontuador geral (14%)
+												Segundo maior pontuador geral (15%)
 											</td>
 										</tr>
 
 										<tr>
 											<td className="p-3 font-medium">🥉 3º lugar</td>
 											<td className="p-3 text-center font-bold text-zinc-700">
-												R$ 400
+												R$ 880
 											</td>
 											<td className="p-3">
 												Terceiro maior pontuador geral (8%)
@@ -212,7 +212,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Rodada 1</td>
 											<td className="p-3 text-center font-bold text-sky-700">
-												R$ 200
+												R$ 440
 											</td>
 											<td className="p-3">
 												Maior pontuação nos 2 primeiros jogos de cada grupo
@@ -222,7 +222,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Rodada 2</td>
 											<td className="p-3 text-center font-bold text-sky-700">
-												R$ 200
+												R$ 440
 											</td>
 											<td className="p-3">
 												Maior pontuação nos 3º e 4º jogos de cada grupo
@@ -232,7 +232,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Rodada 3</td>
 											<td className="p-3 text-center font-bold text-sky-700">
-												R$ 200
+												R$ 440
 											</td>
 											<td className="p-3">
 												Maior pontuação nos 2 últimos jogos de cada grupo
@@ -242,7 +242,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Primeira fase</td>
 											<td className="p-3 text-center font-bold text-violet-700">
-												R$ 250
+												R$ 550
 											</td>
 											<td className="p-3">
 												Maior pontuação total da fase de grupos
@@ -252,7 +252,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Segunda fase</td>
 											<td className="p-3 text-center font-bold text-violet-700">
-												R$ 250
+												R$ 550
 											</td>
 											<td className="p-3">
 												Maior pontuação da segunda fase (mata-mata)
@@ -262,7 +262,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Seleção Brasil</td>
 											<td className="p-3 text-center font-bold text-amber-600">
-												R$ 150
+												R$ 330
 											</td>
 											<td className="p-3">
 												Maior pontuação nos jogos do Brasil
@@ -270,9 +270,9 @@ export default function RulesAccordion() {
 										</tr>
 
 										<tr>
-											<td className="p-3 font-medium">Placar final</td>
+											<td className="p-3 font-medium">Placar em cheio</td>
 											<td className="p-3 text-center font-bold text-emerald-700">
-												R$ 100
+												R$ 220
 											</td>
 											<td className="p-3">Maior número de placares exatos</td>
 										</tr>
@@ -280,7 +280,7 @@ export default function RulesAccordion() {
 										<tr>
 											<td className="p-3 font-medium">Churrasco</td>
 											<td className="p-3 text-center font-bold text-zinc-700">
-												R$ 500
+												R$ 1100
 											</td>
 											<td className="p-3">
 												Contribuição para o evento final entre participantes
@@ -308,11 +308,6 @@ export default function RulesAccordion() {
 									</li>
 								</ol>
 							</div>
-
-							<p className="text-xs text-zinc-500">
-								* estimativa com 50 participantes (R$ 5.000), sujeito a ajuste
-								final
-							</p>
 						</div>
 					)}
 				</div>
