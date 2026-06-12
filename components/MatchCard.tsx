@@ -30,10 +30,10 @@ function sortPredictions(
 	if (!isPublished) {
 		// UNPUBLISHED → use leaderboard ranking
 		return sorted.sort((a, b) => {
-			const posA = leaderboardMap.get(a.participant.id) ?? 9999;
-			const posB = leaderboardMap.get(b.participant.id) ?? 9999;
+			// 	const posA = leaderboardMap.get(a.participant.id) ?? 9999;
+			// 	const posB = leaderboardMap.get(b.participant.id) ?? 9999;
 
-			if (posA !== posB) return posA - posB;
+			// 	if (posA !== posB) return posA - posB;
 
 			return a.participant.name.localeCompare(b.participant.name);
 		});

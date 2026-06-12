@@ -14,14 +14,14 @@ export default async function FinalStandingsPage() {
 	const leaderboard = leaderboardData.leaderboard;
 
 	// STEP 2 — CREATE RANK MAP
-	const leaderboardMap = new Map(leaderboard.map((p) => [p.id, p.position]));
+	// const leaderboardMap = new Map(leaderboard.map((p) => [p.id, p.position]));
 
 	// STEP 3 — SORT FINAL STANDINGS BY LEADERBOARD POSITION
 	const sortedFinalStandings = [...finalStandings].sort((a, b) => {
-		const posA = leaderboardMap.get(a.participant_id) ?? 9999;
-		const posB = leaderboardMap.get(b.participant_id) ?? 9999;
+		// const posA = leaderboardMap.get(a.participant_id) ?? 9999;
+		// const posB = leaderboardMap.get(b.participant_id) ?? 9999;
 
-		if (posA !== posB) return posA - posB;
+		// if (posA !== posB) return posA - posB;
 
 		return a.participantName.localeCompare(b.participantName);
 	});

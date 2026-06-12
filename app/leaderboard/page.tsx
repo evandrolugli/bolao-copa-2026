@@ -115,11 +115,11 @@ export default async function LeaderboardPage() {
 							</th>
 
 							<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-200/20">
-								Δ Pts
+								Δ Pts (dia)
 							</th>
 
 							<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-r border-sky-200/20">
-								Δ Pos
+								Δ Pos (dia)
 							</th>
 
 							<th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
