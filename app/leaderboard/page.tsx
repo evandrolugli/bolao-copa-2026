@@ -66,7 +66,7 @@ export default async function LeaderboardPage() {
 				<div className="flex items-end justify-between gap-4 flex-wrap">
 					{/* Left */}
 					<div>
-						<h1 className="page-title">Classificação</h1>
+						<h1 className="page-title">Classificação Geral</h1>
 					</div>
 
 					{/* Right Info */}
