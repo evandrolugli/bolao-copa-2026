@@ -61,8 +61,11 @@ export function calculatePredictionPoints({
 		if (match.round === "Rodada 2") entry.round2 += points;
 		if (match.round === "Rodada 3") entry.round3 += points;
 
-		if (match.phase !== "Fase 2") entry.phase1 += points;
-		if (match.phase === "Fase 2") entry.phase2 += points;
+		//if (match.phase !== "Fase 2") entry.phase1 += points;
+		//if (match.phase === "Fase 2") entry.phase2 += points;
+
+		if (match.phase !== "Segunda Fase") entry.phase1 += points;
+		if (match.phase === "Segunda Fase") entry.phase2 += points;
 	}
 
 	// final standings points
