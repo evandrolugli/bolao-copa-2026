@@ -114,13 +114,13 @@ export default async function LeaderboardPage() {
 								Brasil
 							</th>
 
-							<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-200/20">
+							{/* <th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-l border-sky-200/20">
 								Δ Pts (dia)
 							</th>
 
 							<th className="w-16 p-3 bg-sky-700 text-sky-200 font-semibold border-r border-sky-200/20">
 								Δ Pos (dia)
-							</th>
+							</th> */}
 
 							<th className="w-16 p-3 bg-white/5 text-zinc-200 font-semibold">
 								R1
@@ -222,7 +222,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Brasil */}
-									<td className="table-cell border-l border-zinc-200">
+									<td className="table-cell border-l border-r border-zinc-200">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -239,7 +239,7 @@ export default async function LeaderboardPage() {
 									</td>
 
 									{/* Δ Points */}
-									<td className="table-cell border-l border-zinc-200">
+									{/* <td className="table-cell border-l border-zinc-200">
 										<div
 											className={`
 											inline-flex items-center justify-center
@@ -255,10 +255,10 @@ export default async function LeaderboardPage() {
 												? `+${participant.todayPoints}`
 												: participant.todayPoints}
 										</div>
-									</td>
+									</td> */}
 
 									{/* Δ Position */}
-									<td className="table-cell text-center border-r border-zinc-200">
+									{/* <td className="table-cell text-center border-r border-zinc-200">
 										<div
 											className={`
 												inline-flex items-center gap-1 font-semibold text-sm
@@ -294,7 +294,7 @@ export default async function LeaderboardPage() {
 												<span className="text-zinc-500">0</span>
 											)}
 										</div>
-									</td>
+									</td> */}
 
 									{/* Rounds */}
 									{roundKeys.map((key) => {
